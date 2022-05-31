@@ -13,3 +13,11 @@ build/lib/pyris/vector/axis.py
 build/lib/pyris/vector/interpolation.py
 build/lib/pyris/vector/migration.py
 build/scripts-3.9/pyris
+pyris.egg-info/dependency_links.txt
+pyris.egg-info/PKG-INFO
+pyris.egg-info/requires.txt
+pyris.egg-info/SOURCES.txt
+pyris.egg-info/top_level.txt
+dist/pyris-1.0-py3.9.egg
+build/scripts-3.9/pyrisw.py
+pyris/bin/pyrisw.py
