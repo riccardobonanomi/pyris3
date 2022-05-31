@@ -205,11 +205,11 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
             plt.figure()
             plt.imshow( mask_lab, cmap=cm.nipy_spectral, interpolation='none' )
             plt.title( 'Indentify the label(s) corresponding to the river planform.' )
-            for ifeat in xrange( 1, num_features+1 ):
+            for ifeat in range( 1, num_features+1 ):
                 c0 = np.column_stack( np.where( mask_lab==ifeat ) )[0]
                 plt.text( c0[1], c0[0], '%s' % ifeat, fontsize=30, bbox=dict( facecolor='white' ) )
             plt.show()
-            labs = raw_input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space): ' ).split(' ')
+            labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space): ' ).split(' ')
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
         else:
@@ -260,7 +260,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
     if not file_only:
         maskfiles = sorted( [ os.path.join(maskdir, f) for f in os.listdir(maskdir) ] )
         if geodir is not None: geofiles = sorted( [ os.path.join(geodir, f) for f in os.listdir(geodir) ] )
-        else: gofiles = [ None for i in xrange( len(maskfiles) ) ]
+        else: gofiles = [ None for i in range( len(maskfiles) ) ]
     else:
         maskfiles = [ maskdir ]
         if geodir is not None:
@@ -291,7 +291,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
         bw = RemoveSmallObjects( bw, 100*pixel_width**2 ) # Remove New Small Objects
 
         ans = None
-        while ans not in ['y', 'n']: ans = raw_input('overwrite mask file?[y/n] ')
+        while ans not in ['y', 'n']: ans = input('overwrite mask file?[y/n] ')
         if ans == 'y':
             print('saving mask file')
             np.save( maskfile, mask*bw )
@@ -345,7 +345,7 @@ def skeletonize_all( maskdir, skeldir, config ):
         skel = skel.astype( int )
         skel[ dist==1 ] = 0
         skelabs, nsl = ndimage.measurements.label( skel, structure=np.ones((3,3)) )
-        for sl in xrange(1,nsl+1):
+        for sl in range(1,nsl+1):
             if (skelabs==sl).sum() <= 500: skel[ skelabs==sl ] = 0
 
         # Pruning
@@ -354,7 +354,7 @@ def skeletonize_all( maskdir, skeldir, config ):
         if ( skelabs>0 ).sum() == 0:
             print('Something missing when pruning current label. Skipping...')
             continue
-        for lab in xrange( 1, num_features+1 ):
+        for lab in range( 1, num_features+1 ):
             print('pruning label %d...' % lab)
             pruned += Pruning( labelled_skel==lab, int(config.get('Pruning', 'prune_iter')), smooth=False ) # Remove Spurs
         pruned *= dist.astype( int )
@@ -363,8 +363,8 @@ def skeletonize_all( maskdir, skeldir, config ):
         p = Pruner( np.where(pruned>0,1,0) )
         p.BuildStrides()
         Njunctions = 0
-        for i in xrange( p.strides.shape[0] ):
-            for j in xrange( p.strides.shape[1] ):
+        for i in range( p.strides.shape[0] ):
+            for j in range( p.strides.shape[1] ):
                 if p.strides[i,j,1,1] == 1:
                     s = p.strides[i,j].sum()
                     if s == 4:
@@ -372,7 +372,7 @@ def skeletonize_all( maskdir, skeldir, config ):
                         matrix[1,1] = 0
                         pos = zip( *np.where( matrix > 0 ) )
                         dists = np.zeros( len(pos) )
-                        for ip in xrange( len(pos) ):
+                        for ip in range( len(pos) ):
                             ipp = ip+1 if ip+1 < len(pos) else 0
                             dists[ip] = np.sqrt( (pos[ip][0]-pos[ipp][0])**2 + (pos[ip][1]-pos[ipp][1])**2 )
                         if np.any( dists<=1.001 ): continue
@@ -434,7 +434,7 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
         # Centerline Extraction
         print('extracting centerline of n=%d labelled elements...' % num_features)
         axis = Line2D()
-        for lab in xrange( num_features, 0, -1 ):
+        for lab in range( num_features, 0, -1 ):
             print('extracting label %d...' % lab)
             pdist = skel*(mask==lab)
             curr_axis = ReadAxisLine( pdist, flow_from=config.get('Data', 'flow_from'),
@@ -520,8 +520,8 @@ def migration_rates( axisfiles, migdir, columns=(0,1), show=False, pfreq=1 ):
             idx = np.where(db>0)[0]
             plt.plot( x, y, c=colors[i], lw=lws[i], label=name )
             plt.plot( x[idx], y[idx], 'o', c=colors[i] )
-            for j in xrange(idx.size): plt.text( x[idx[j]], y[idx[j]], str(int(b[idx[j]])) )
-            for j in xrange(0,a1.shape[1],5): plt.arrow( x[j], y[j], dx[j], dy[j], fc='k', ec='k' )
+            for j in range(idx.size): plt.text( x[idx[j]], y[idx[j]], str(int(b[idx[j]])) )
+            for j in range(0,a1.shape[1],5): plt.arrow( x[j], y[j], dx[j], dy[j], fc='k', ec='k' )
             I = m1[6]==2
             plt.plot( [x[I], x[I]+dx[I]], [y[I], y[I]+dy[I]], 'k', lw=4 )
         plt.axis( 'equal' )

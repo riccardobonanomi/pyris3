@@ -6,10 +6,7 @@
 # Description: Local Configuration Module
 # =======================================
 
-try:
-    import ConfigParser
-except ImportError:
-    import configparser as ConfigParser
+import configparser as ConfigParser
 
 def default_config():
     '''Set up a configuration file for PyRIS'''

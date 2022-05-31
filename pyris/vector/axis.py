@@ -88,45 +88,45 @@ class AxisReader( object ):
         strides = self.BuildStrides()
         
         if self.start_from == 'b':
-            for i in xrange( self.hits.shape[0]-1, 0, -1 ):
+            for i in range( self.hits.shape[0]-1, 0, -1 ):
                 if np.all( self.hits[i,:] == 0 ): continue
-                for j in xrange( 1, self.hits.shape[1]-1 ):
+                for j in range( 1, self.hits.shape[1]-1 ):
                     for primitive in self.primitives:
-                        for iSide in xrange( 4 ):
+                        for iSide in range( 4 ):
                             seed = np.rot90( primitive, iSide )
                             if ( strides[i-1,j-1] == seed ).all():
                                 self.i0, self.j0 = i, j
                                 return None
 
         elif self.start_from == 't':
-            for i in xrange( 1, self.hits.shape[0] ):
+            for i in range( 1, self.hits.shape[0] ):
                 if np.all( self.hits[i,:] == 0 ): continue
-                for j in xrange( 1, self.hits.shape[1]-1 ):
+                for j in range( 1, self.hits.shape[1]-1 ):
                     if self.hits[i,j] == 0: continue
                     for primitive in self.primitives:
-                        for iSide in xrange( 4 ):
+                        for iSide in range( 4 ):
                             seed = np.rot90( primitive, iSide )
                             if ( strides[i-1,j-1] == seed ).all():
                                 self.i0, self.j0 = i, j
                                 return None
 
         elif self.start_from == 'l':
-            for j in xrange( 1, self.hits.shape[1] ):
+            for j in range( 1, self.hits.shape[1] ):
                 if np.all( self.hits[:,j] == 0 ): continue
-                for i in xrange( 1, self.hits.shape[0]-1 ):
+                for i in range( 1, self.hits.shape[0]-1 ):
                     for primitive in self.primitives:
-                        for iSide in xrange( 4 ):
+                        for iSide in range( 4 ):
                             seed = np.rot90( primitive, iSide )
                             if ( strides[i-1,j-1] == seed ).all():
                                 self.i0, self.j0 = i, j
                                 return None
 
         elif self.start_from == 'r':
-            for j in xrange( self.hits.shape[1]-1, 0, -1 ):
+            for j in range( self.hits.shape[1]-1, 0, -1 ):
                 if np.all( self.hits[:,j] == 0 ): continue
-                for i in xrange( 1, self.hits.shape[0]-1 ):
+                for i in range( 1, self.hits.shape[0]-1 ):
                     for primitive in self.primitives:
-                        for iSide in xrange( 4 ):
+                        for iSide in range( 4 ):
                             seed = np.rot90( primitive, iSide )
                             if ( strides[i-1,j-1] == seed ).all():
                                 self.i0, self.j0 = i, j
@@ -154,7 +154,7 @@ class AxisReader( object ):
         N = 0 # Counter
         ijunct = 0 # Junction Index
 
-        for ITER in xrange( MAXITER ):
+        for ITER in range( MAXITER ):
             i0, j0 = I[-1], J[-1] # Previous Point
             self.hits[i0,j0] = 0 # Set it to 0 in the Hit&Miss Matrix
             seed = self.hits[i0-1:i0+2, j0-1:j0+2] # 3x3 neighboring element
@@ -210,7 +210,7 @@ class AxisReader( object ):
                 axijs = []
                 endpoints = []
                 resolved = []
-                for ij in xrange( len( pos ) ):
+                for ij in range( len( pos ) ):
                     first_point = ( pos[ij][0]+i0-1, pos[ij][1]+j0-1 ) # Initial Point of the Local Branch
                     removed_indexes = [ ij-1, (ij+1)%len(pos) ]
                     for idx in removed_indexes: self.hits[ pos[idx][0]+i0-1, pos[idx][1]+j0-1 ] = 0                    
@@ -225,7 +225,7 @@ class AxisReader( object ):
                 if dists.min() < 1:
                     pos, axijs, jncsw, endpoints = [ list(l) for l in zip(
                         *sorted( zip( pos, axijs, jncsw, endpoints ), key=lambda group: group[2] ) ) ]                        
-                    for ij in xrange( len( pos ) ): self.hits[ axijs[ij][1][:-1], axijs[ij][0][:-1] ] = 0
+                    for ij in range( len( pos ) ): self.hits[ axijs[ij][1][:-1], axijs[ij][0][:-1] ] = 0
                     I.extend( axijs[-1][1] )
                     J.extend( axijs[-1][0] )
                     continue
@@ -243,7 +243,7 @@ class AxisReader( object ):
                 self.GetJunction( N )                    
                 axijs = []                
                 
-                for ij in xrange( len( pos ) ):
+                for ij in range( len( pos ) ):
                     
                     # For each of the Junctions is created a recursive instance
                     first_point = ( pos[ij][0]+i0-1, pos[ij][1]+j0-1 ) # Initial Point of the Local Branch

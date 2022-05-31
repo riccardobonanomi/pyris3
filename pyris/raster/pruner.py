@@ -76,7 +76,7 @@ class Pruner( object ):
         '''Update(i) - Prune for the current iteration i'''
         remainder = 0 # Convergence check
         for primitive in self.primitives:
-            for side in xrange( 4 ):
+            for side in range( 4 ):
                 seed = np.rot90( primitive, side )
                 mask = ( self.strides == seed ).all( axis=(2,3) )
                 remainder += np.count_nonzero( mask )
@@ -91,7 +91,7 @@ class Pruner( object ):
         for iw, wrong_block in enumerate( self.wrong_blocks ):
             if iw == 1: Nsides=1 # Only one is required since this block is symmetric
             else: Nsides=4
-            for side in xrange( Nsides ):
+            for side in range( Nsides ):
                 seed = np.rot90( wrong_block, side )
                 mask = ( self.strides == seed ).all( axis=(2,3) )
                 self.img[1:-1,1:-1] = np.where( mask, 1, self.img[1:-1,1:-1] )
@@ -101,7 +101,7 @@ class Pruner( object ):
         '''Smooth() - Remove Very High Local Curvature Gradients'''
         self.BuildStrides()
         print('smoothing centerline...')
-        for side in xrange( 4 ):
+        for side in range( 4 ):
             seed = np.rot90( self.smooth_block, side )
             mask = ( self.strides == seed ).all( axis=(2,3) )
             self.img[1:-1,1:-1] = np.where( mask, 1, self.img[1:-1,1:-1] )
@@ -116,7 +116,7 @@ class Pruner( object ):
                         
     def Prune( self, NMAX, verbose=True ):
         '''Prune( NMAX ) - Pruning Iterations'''
-        for i in xrange( NMAX ):
+        for i in range( NMAX ):
             self.BuildStrides()
             if verbose: print('pruning iteration %03d on %3d' % ( i+1, NMAX ))
             remainder = self.Update( self.primitives )

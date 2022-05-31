@@ -3,8 +3,7 @@ import os, sys
 import numpy as np
 from skimage import morphology as mm
 from skimage.util import img_as_ubyte
-try: from skimage.filters import threshold_otsu, rank
-except ImportError: from skimage.filter import threshold_otsu, rank
+from skimage.filters import threshold_otsu, rank
 
 def l7smooth( u ):
     # Landsat7 Correction if SLC-off

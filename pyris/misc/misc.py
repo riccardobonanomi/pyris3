@@ -15,6 +15,7 @@ from matplotlib.gridspec import GridSpec
 from skimage.io import imread
 from skimage.morphology import closing, disk
 from osgeo import gdal
+import sys
 import warnings
 
 # Matplotlib Setting
@@ -246,7 +247,7 @@ class interactive_mask( object ):
     def __call__( self, *args, **kwargs ):
         inverse = kwargs.pop( 'inverse', False )
         if inverse:
-            gmasks = list( sys.argv[1] )
+            gmasks = list(sys.argv[1] )
             return self.dereference( gmasks )
         masks = self._set_mask()
         return self.georeference( masks )

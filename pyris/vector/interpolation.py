@@ -90,7 +90,7 @@ def CurvaturePCS( *args, **kwargs ):
     ds = np.sqrt( dx**2 + dy**2 )
     s = np.cumsum( ds )
     theta = np.arctan2( dy, dx )
-    for i in xrange(1,theta.size):
+    for i in range(1,theta.size):
         if theta[i] - theta[i-1] > np.pi: theta[i] -= 2*np.pi
         elif theta[i] - theta[i-1] < -np.pi: theta[i] += 2*np.pi
     if method == 1:

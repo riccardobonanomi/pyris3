@@ -79,7 +79,7 @@ class Unwrapper( object ):
         angle = np.arctan2( np.gradient( Y ),  np.gradient( X ) )
 
         # Create Cartesian Coorinates Array for Intrinsic Coordinate Grid
-        for i in xrange( S.size ):
+        for i in range( S.size ):
             n = N * B[i] # Pixel Units Transverse Coordinate
             self.Xc[i,:] = X[i] + n[:]*np.cos( angle[i]-np.pi/2 )
             self.Yc[i,:] = Y[i] + n[:]*np.sin( angle[i]-np.pi/2 )
@@ -187,9 +187,9 @@ class BarFinder( object ):
         num_features = self.BarIdx.max() # Number of Bar Features
         IC, JC = np.zeros(num_features,dtype=int), np.zeros(num_features,dtype=int) # Indexes of Bar Centroids
         # Compute Bar Centroids
-        for n in xrange( 1,num_features ): [ IC[n-1], JC[n-1] ] = ndimage.measurements.center_of_mass( self.Bars==(n) )
+        for n in range( 1,num_features ): [ IC[n-1], JC[n-1] ] = ndimage.measurements.center_of_mass( self.Bars==(n) )
         # Apply a Correction to the Transverse Position of the Centroid: we take the position of the maximum longitudinal extension (main s axis)
-        for n in xrange( 1,num_features ):
+        for n in range( 1,num_features ):
             s_lengths = (self.Bars==n).sum(axis=0)
             pos = np.where( s_lengths == s_lengths.max() )[0]
             JC[n-1] = int( ( pos.min() + pos.max() ) / 2 )
@@ -326,7 +326,7 @@ class BarFinder( object ):
         plt.plot( XC[:,0], YC[:,0], 'k', lw=2 )
         plt.plot( XC[:,-1], YC[:,-1], 'k', lw=2 )    
         # Draw Cross Sections
-        for i in xrange(1, self.unwrapper.s.size-1, 10):
+        for i in range(1, self.unwrapper.s.size-1, 10):
             ax2.plot( XC[i,:], YC[i,:], 'k' )
             ax2.text( XC[i,-1], YC[i,-1], 's=%s' % int(self.unwrapper.s[i]/self.unwrapper.b.mean()) )
             ax3.plot( XC[i,:], YC[i,:], 'k' )
@@ -736,7 +736,7 @@ class FreeTemporalBars( TemporalBars ):
             I, J = np.zeros( NMAX, dtype=int ), np.zeros( NMAX, dtype=int )
             dsi, dni, dxi, dyi, dmi, dzi = map( NaNs, [NMAX]*6 )
             hwidths[iFinder] = Finder.unwrapper.b.mean()
-            for i in xrange( NMAX ): # For each Bar in the Time Frame
+            for i in range( NMAX ): # For each Bar in the Time Frame
                 I[i] = BarCorr[i][1] # Longitudinal Position of Bar Centroid
                 J[i] = BarCorr[i][2] # Transversal Position of Bar Centroid
                 dsi[i] = BarCorr[i][10] # Longitudinal Distance to which the Bar Centroid has Migrated
@@ -795,7 +795,7 @@ class FreeTemporalBars( TemporalBars ):
         for cnt, (BarCorr, Finder, T1, T2) in enumerate( zip(self.BarsCorr, self.Bars[:-1], self.T[:-1], self.T[1:]) ): # For all the TimeFrames
             dT = (T2-T1)
             icnt = 0
-            for i in xrange( len(BarCorr) ): # For all the Channel Bars in the Current TimeFrame
+            for i in range( len(BarCorr) ): # For all the Channel Bars in the Current TimeFrame
                 if BarCorr[i][5]<0: continue
                 icnt += 1
                 Xi.append( BarCorr[i][3] ), Yi.append( BarCorr[i][4] )
