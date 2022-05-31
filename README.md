@@ -39,3 +39,6 @@ On Windows
 * Call pyris from the command line:
       pyris [args]
 * 'pyris --help' provides information on the required arguments
+
+### Updated to python 3
+Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
