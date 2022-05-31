@@ -14,7 +14,7 @@ from scipy.spatial import distance as scipy_dist
 from numpy.lib import stride_tricks
 from skimage.measure import regionprops, label as skimage_label
 from ..misc import GeoReference, Line2D
-from matplotlib import pyplot as plt
+# from matplotlib import pyplot as plt # check if it works if not, add cm also 
 
 
 class AxisReader( object ):

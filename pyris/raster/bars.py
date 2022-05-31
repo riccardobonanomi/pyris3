@@ -15,6 +15,7 @@ from skimage import morphology as mm
 from skimage.feature import peak_local_max
 from skimage import measure as sm
 from matplotlib import pyplot as plt
+from matplotlib import cm
 from matplotlib import gridspec
 from ..raster.segmentation import SegmentationIndex
 from ..misc.misc import GeoReference, NaNs
@@ -505,7 +506,7 @@ class TemporalBars( object ):
             if hasattr( self, 'centroids_IJ' ): [ centroids_IJ, centroids_SN, centroids_XY ] = [ self.centroids_IJ, self.centroids_SN, self.centroids_XY ]
             else: [ centroids_IJ, centroids_SN, centroids_XY ] = self.CentroidsEvol( BEND )
     
-            colors = [ plt.cm.Spectral_r(k) for k in np.linspace(0, 1, len(contours_SN)) ]
+            colors = [ cm.Spectral_r(k) for k in np.linspace(0, 1, len(contours_SN)) ]
             lws = np.linspace( 0.5, 2.5, len(contours_SN) )
         
             smin, smax = 0, 0
@@ -834,7 +835,7 @@ class FreeTemporalBars( TemporalBars ):
             plt.figure(figsize=(16,2))
             plt.title( 'Average annual longitudinal migration rate of channel bars (%d-%d)' % (int(self.T[0]), int(self.T[-1])) )
             plt.pcolormesh( S, N, np.ma.array(Z,mask=np.isnan(Z)).T, cmap='jet' )
-            cs = [plt.cm.RdYlBu_r(xx) for xx in np.linspace(0,1,len(self.BarsCorr))]
+            cs = [cm.RdYlBu_r(xx) for xx in np.linspace(0,1,len(self.BarsCorr))]
             for cnt, (BarCorr, Finder, T1, T2) in enumerate( zip(self.BarsCorr, self.Bars[:-1], self.T[:-1], self.T[1:]) ):
                 dT = (T2 - T1)
                 for i in xrange( len(BarCorr) ):

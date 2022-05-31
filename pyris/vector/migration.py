@@ -12,8 +12,7 @@ import numpy as np
 from scipy import interpolate
 from ..misc import NaNs, Intersection
 from .interpolation import InterpPCS, CurvaturePCS
-import matplotlib.pyplot as plt
-
+# import matplotlib.pyplot as plt # check if it works, if not add also cm
 
 class AxisMigration( object ):
 
