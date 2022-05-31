@@ -70,7 +70,7 @@ def load( fname, *args, **kwargs ):
         return np.load( fname, *args, **kwargs )
     else:
         e = 'Format %s not supported for file %s. Use either "npy" or "txt"' % ( ext, fname )
-        raise TypeError, e
+        raise TypeError(e)
 
 def save( fname, *args, **kwargs ):
     '''Save file depending on the extension'''
@@ -81,7 +81,7 @@ def save( fname, *args, **kwargs ):
         return np.save( fname, *args, **kwargs )
     else:
         e = 'Format %s not supported for file %s. Use either "npy" or "txt"' % ( ext, fname )
-        raise TypeError, e
+        raise TypeError(e)
 
 def get_year_jday( landsatname ):
     '''Get year and julian day from Landsat name'''
@@ -143,16 +143,16 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
         # skip the files which have already been processes
         if all( map( os.path.isfile, [ maskfile, geofile ] ) ):
             print
-            print 'data found for file %s - skipping '  % ( landsatname )
+            print('data found for file %s - skipping '  % ( landsatname ))
             to_skip.append( name )
             continue
 
         print
-        print 'Processing file %s' % ( landsatname )
+        print('Processing file %s' % ( landsatname ))
 
         bands, GeoTransf = LoadLandsatData( landsat )
 
-        print 'applying BW masks...'
+        print('applying BW masks...')
 
         # GeoReferencing of White and Black masks
         bw_masks_georef = GeoReference( GeoTransf )
@@ -172,17 +172,17 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
         radius = 2 * pixel_width # Circle Radius for Local Thresholding
         
         # Compute Mask
-        print 'computing mask...'
+        print('computing mask...')
         _, mask, _ = SegmentationIndex( R=R, G=G, B=B, NIR=NIR, MIR=MIR, SWIR=SWIR, index=config.get('Segmentation', 'method'), 
                                         rad=radius, method=config.get('Segmentation', 'thresholding') )
         # Mask Landsat NoData
-        print 'nodata dilation...'
+        print('nodata dilation...')
         nanmask = np.where( bands[0]==0, 1, 0 )
         nanmask = mm.binary_dilation( nanmask, mm.disk( 30 ) )
         mask = np.where( nanmask==1, 0, mask*black )
 
         # Image Cleaning
-        print 'cleaning mask...'
+        print('cleaning mask...')
         mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # One Hundred Widths of Channel at Least is Required
         radius = max( np.floor( 0.5 * ( pixel_width ) ) - 3, 0 )
         mask = mm.binary_opening( mask, mm.disk( radius ) ) # Break Small Connectins
@@ -197,8 +197,8 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
         # Rotate back to the original
         mask = np.rot90( mask, -rot_angle[config.get( 'Data', 'flow_from' )] )
         mask_lab = np.rot90( mask_lab, -rot_angle[config.get( 'Data', 'flow_from' )] )
-        print 'labelling feature in channel mask...'
-        print 'found %s features in river mask %s...' % ( num_features, os.path.basename(maskfile) )
+        print('labelling feature in channel mask...')
+        print('found %s features in river mask %s...' % ( num_features, os.path.basename(maskfile) ))
 
         if auto_label is None:
             plt.figure()
@@ -229,9 +229,9 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
                 mask = mask_lab==labs[ areas.argmax() ]
             else:
                 e = "labelling method '%s' not known. choose either 'auto', 'max', 'all' or None" % auto_label
-                raise ValueError, e
+                raise ValueError(e)
 
-        print 'saving  mask and GeoTransf data...'
+        print('saving  mask and GeoTransf data...')
         np.save( maskfile, mask )
         with open( geofile, 'w' ) as gf: pickle.dump( GeoTransf, gf )
     return None
@@ -267,7 +267,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
             geofiles = geofiles if os.path.isfile(geofiles[0]) else [ None ]
         else: geofiles = [ None ]
     for ifile, (maskfile,geofile) in enumerate( zip( maskfiles, geofiles ) ):
-        print 'cleaning file %s' % maskfile
+        print('cleaning file %s' % maskfile)
         # Look for the corresponding landsat image
         bg = None
         if config is not None:
@@ -292,10 +292,10 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
         ans = None
         while ans not in ['y', 'n']: ans = raw_input('overwrite mask file?[y/n] ')
         if ans == 'y':
-            print 'saving mask file'
+            print('saving mask file')
             np.save( maskfile, mask*bw )
         else:
-            print 'skipping'
+            print('skipping')
     return None
 
 
@@ -327,16 +327,16 @@ def skeletonize_all( maskdir, skeldir, config ):
 
         # skip the files which have already been processes
         if os.path.isfile( skelfile ):
-            print 'data found for file %s - skipping '  % ( skelfile )
+            print('data found for file %s - skipping '  % ( skelfile ))
             continue
         print
-        print 'Processing file %s' % ( maskfile )
+        print('Processing file %s' % ( maskfile ))
 
         mask = np.load( maskfile ).astype( int )
         num_features = mask.max()
 
         # Skeletonization
-        print 'skeletonizing...'
+        print('skeletonizing...')
         skel, dist = Skeletonize( np.where(mask>0,1,0).astype( int ) ) # Compute Axis and Distance
         labelled_skel = skel.astype(int) * mask.astype(int)
 
@@ -348,13 +348,13 @@ def skeletonize_all( maskdir, skeldir, config ):
             if (skelabs==sl).sum() <= 500: skel[ skelabs==sl ] = 0
 
         # Pruning
-        print 'pruning n=%d labelled elements...' % num_features
+        print('pruning n=%d labelled elements...' % num_features)
         pruned = np.zeros( mask.shape, dtype=int )
         if ( skelabs>0 ).sum() == 0:
-            print 'Something missing when pruning current label. Skipping...'
+            print('Something missing when pruning current label. Skipping...')
             continue
         for lab in xrange( 1, num_features+1 ):
-            print 'pruning label %d...' % lab
+            print('pruning label %d...' % lab)
             pruned += Pruning( labelled_skel==lab, int(config.get('Pruning', 'prune_iter')), smooth=False ) # Remove Spurs
         pruned *= dist.astype( int )
 
@@ -377,11 +377,11 @@ def skeletonize_all( maskdir, skeldir, config ):
                         if np.any( dists<=1.001 ): continue
                         Njunctions += 1
         if Njunctions > 15:
-            print '''
+            print('''
             'Warning!'
             'Expected at least %s recursion level.'
             'Consider increasing the pruning iteration or calling pyris with the --clean-mask flag'
-            ''' % Njunctions
+            ''' % Njunctions)
         np.save( skelfile, pruned )
     return None
 
@@ -419,10 +419,10 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
 
         # skip the files which have already been processes
         if os.path.isfile( axisfile ):
-            print 'data found for file %s - skipping '  % ( axisfile )
+            print('data found for file %s - skipping '  % ( axisfile ))
             continue
         print
-        print 'Processing file %s' % ( maskfile )
+        print('Processing file %s' % ( maskfile ))
 
         # Load mask, skeleton and GeoFile
         if use_geo: GeoTransf = pickle.load( open( geofile ) )
@@ -431,10 +431,10 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
         num_features = mask.max()
         
         # Centerline Extraction
-        print 'extracting centerline of n=%d labelled elements...' % num_features
+        print('extracting centerline of n=%d labelled elements...' % num_features)
         axis = Line2D()
         for lab in xrange( num_features, 0, -1 ):
-            print 'extracting label %d...' % lab
+            print('extracting label %d...' % lab)
             pdist = skel*(mask==lab)
             curr_axis = ReadAxisLine( pdist, flow_from=config.get('Data', 'flow_from'),
                                       method=config.get('Axis', 'reconstruction_method'),
@@ -442,7 +442,7 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
             axis.join( curr_axis )
 
         # Interpolation
-        print 'parametric cublic spline interpolation of the centerline...'
+        print('parametric cublic spline interpolation of the centerline...')
         step = int( max( 1, 0.5*int( axis.B.mean() ) ) ) # Discard points if too close
         Npoints = axis.L / (0.25*axis.B.mean()) # Spacing = width/4
         PCSs = 0.25*axis.x[::step].size # Degree of smoothness = n. of data points
@@ -466,7 +466,7 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
             x_PCS, y_PCS, s_PCS, theta_PCS, Cs_PCS, B_PCS = xp_PCS, yp_PCS, sp_PCS, thetap_PCS, Csp_PCS, Bp_PCS
 
         # Save Axis Properties
-        print 'saving main channel data...'
+        print('saving main channel data...')
         save( axisfile, ( x_PCS, y_PCS, s_PCS, theta_PCS, Cs_PCS, B_PCS, xp_PCS, yp_PCS ) )
     return None
         
@@ -568,14 +568,14 @@ def bars_detection( landsat_dirs, geodir, axisdir, migdir, bardir, show=False ):
                 landsat_found = True
                 break
         if not landsat_found:
-            print 'Landsat data not found for %s. Skipping...' % basename
+            print('Landsat data not found for %s. Skipping...' % basename)
             continue
             found_files.append( axis_file )
         
         close=True
         remove_small=True
 
-        print 'Processing file %s' % basename
+        print('Processing file %s' % basename)
 
         GeoTransf = pickle.load( open(geo_file) )
         axis = load( axis_file )
