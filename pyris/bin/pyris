@@ -98,9 +98,6 @@ if args.merge is not None:
             merge_args += [ os.path.join( arg, os.path.basename(arg)+pattern ) ]
         merge_args += [ '-o', ofile, '-n', '0' ]
         print('Merging band %d...' % i)
-        # import osgeo_utils.gdal_merge as merge #let's see if it works
-        sys.path.append('/bin/') # let's see if this work
-        import gdal_merge as merge
         merge( merge_args )
 
 # Individual Settings
