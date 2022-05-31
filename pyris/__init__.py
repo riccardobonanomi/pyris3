@@ -203,7 +203,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
 
         if auto_label is None:
             plt.figure()
-            plt.imshow( mask_lab, cmap=cm.ni_pyspectral, interpolation='none' )
+            plt.imshow( mask_lab, cmap=cm.nipy_spectral, interpolation='none' )
             plt.title( 'Indentify the label(s) corresponding to the river planform.' )
             for ifeat in xrange( 1, num_features+1 ):
                 c0 = np.column_stack( np.where( mask_lab==ifeat ) )[0]
