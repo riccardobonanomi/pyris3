@@ -234,7 +234,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
 
         print('saving  mask and GeoTransf data...')
         np.save( maskfile, mask )
-        with open( geofile, 'w' ) as gf: pickle.dump( GeoTransf, gf )
+        with open( geofile, 'wb' ) as gf: pickle.dump( GeoTransf, gf )
     return None
 
 
