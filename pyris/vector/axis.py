@@ -132,7 +132,7 @@ class AxisReader( object ):
                                 self.i0, self.j0 = i, j
                                 return None
 
-        raise IndexError, 'First Point Not Found!'    
+        raise IndexError('First Point Not Found!')
 
 
     def NeiDist( self, idx1, idx2 ):
@@ -233,11 +233,9 @@ class AxisReader( object ):
                     
                 # Multithread channel junction
                 if self.call_depth==0:
-                    print 'channel junction at ', i0, j0, 'n branches %d - ' % len( pos ), \
-                        'starting recursion (this may require some time)...'
+                    print('channel junction at ', i0, j0, 'n branches %d - ' % len( pos ), 'starting recursion (this may require some time)...')
                 elif self.call_depth > 0 and self.verbose:
-                    print 'channel junction at ', i0, j0, 'n branches %d - ' % len( pos ), \
-                        'level of recursion: %d' % ( self.call_depth )
+                    print('channel junction at ', i0, j0, 'n branches %d - ' % len( pos ), 'level of recursion: %d' % ( self.call_depth ))
                     
                 jncsl = [] # Total Lengths of the Following Branches at Junction
                 jncsw = [] # Average Width of the Following Branches at Junction
@@ -288,7 +286,7 @@ class AxisReader( object ):
                     rdepths = np.delete( rdepths, idx_to_rm )
                     IDX = jncsw.argmax()
                 else:
-                    raise ValueError, 'method %s not known. Must be either "std", "length" or "width"' % self.method
+                    raise ValueError('method %s not known. Must be either "std", "length" or "width"' % self.method)
 
                 # Take the Widest between the remaining branches
                 _J, _I, _ = axijs[ IDX ]
@@ -298,7 +296,7 @@ class AxisReader( object ):
                 break
 
         if ITER == MAXITER-1 and not self.method == 'fast':
-            print 'WARNING: Maximum number of iteration reached in axis extraction!'
+            print('WARNING: Maximum number of iteration reached in axis extraction!')
         I, J = np.asarray( I ), np.asarray( J )
         B = self.I[I, J]
         return [ J+self.yl, I+self.xl, B ]
@@ -331,7 +329,7 @@ def ReadAxisLine( I, flow_from=None, method='std', MAXITER=100000 ):
     
     r = AxisReader( I, start_from=flow_from, method=method )
     [ Xpx, Ypx, Bpx ] = r( MAXITER=MAXITER )
-    print 'axis read with a recursion level of %s' % r.call_depth
+    print('axis read with a recursion level of %s' % r.call_depth)
     line = Line2D( x=Xpx, y=Ypx, B=Bpx )
     return line
 

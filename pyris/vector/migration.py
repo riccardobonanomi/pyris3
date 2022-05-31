@@ -166,7 +166,7 @@ class AxisMigration( object ):
                     try:
                         C12[ipoint] = C2[ np.nanargmin( np.sqrt( (xC2-xi1)**2 + (yC2-yi1)**2 ) ) ]
                     except ValueError:
-                        raise ValueError, 'not able to compute inflection correlation for planform n. %d. Please check your axis' % (i+2)
+                        raise ValueError('not able to compute inflection correlation for planform n. %d. Please check your axis' % (i+2))
                     
                 # There are some duplicated points - we need to get rid of them
                 unique, counts = np.unique(C12, return_counts=True)

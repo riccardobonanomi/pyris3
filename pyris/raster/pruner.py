@@ -100,7 +100,7 @@ class Pruner( object ):
     def Smooth( self, NMAX ):
         '''Smooth() - Remove Very High Local Curvature Gradients'''
         self.BuildStrides()
-        print 'smoothing centerline...'
+        print('smoothing centerline...')
         for side in xrange( 4 ):
             seed = np.rot90( self.smooth_block, side )
             mask = ( self.strides == seed ).all( axis=(2,3) )
@@ -118,16 +118,14 @@ class Pruner( object ):
         '''Prune( NMAX ) - Pruning Iterations'''
         for i in xrange( NMAX ):
             self.BuildStrides()
-            if verbose: print 'pruning iteration %03d on %3d' % ( i+1, NMAX )
+            if verbose: print('pruning iteration %03d on %3d' % ( i+1, NMAX ))
             remainder = self.Update( self.primitives )
             if self.Convergence( remainder ):
                 if verbose:
-                    print \
-                      'pruning convergence reached after %3d iterations' \
-                      % (i+1)
+                    print('pruning convergence reached after %3d iterations' % (i+1))
                 break
             if i+1 == NMAX:
-                print 'maximum number of pruning iterations reached'
+                print('maximum number of pruning iterations reached')
 
     def __call__( self, NMAX, verbose=True, fix_skel=True, smooth=True ):
         if fix_skel: self.FixWrongSkelBlocks()

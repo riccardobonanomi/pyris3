@@ -56,10 +56,10 @@ __all__ = [
     ]
 
 # Import Everything from SubModules
-from raster import *
-from vector import *
-from misc import *
-from config import *
+from .raster import *
+from .vector import *
+from .misc import *
+from .config import *
 
 def load( fname, *args, **kwargs ):
     '''Load file depending on the extension'''

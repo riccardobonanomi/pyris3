@@ -54,7 +54,7 @@ def SegmentationIndex( *args, **kwargs ):
         raise NotImplementedError
     else:
         err = 'Index %s not recognized' % IDX
-        raise ValueError, err
+        raise ValueError(err)
 
     if L7correction:
         IDX = l7smooth( IDX )
@@ -69,10 +69,10 @@ def SegmentationIndex( *args, **kwargs ):
     if index=='MIX': globthreshX = threshold_otsu( IDXX[np.isfinite(IDXX)] )
 
     if method == 'local':
-        print "applying local Otsu method - this may require some time... ", 
+        print("applying local Otsu method - this may require some time... ", )
         thresh = rank.otsu( img_as_ubyte(IDX), selem ).astype(float)
         if index=='MIX': threshX = rank.otsu( img_as_ubyte(IDXX), selem ).astype(float)
-        print 'done'
+        print('done')
     else:
         thresh = globthresh
         if index=='MIX':
