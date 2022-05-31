@@ -202,7 +202,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
 
         if auto_label is None:
             plt.figure()
-            plt.imshow( mask_lab, cmap=plt.cm.spectral, interpolation='none' )
+            plt.imshow( mask_lab, cmap=plt.cm.ni_pyspectral, interpolation='none' )
             plt.title( 'Indentify the label(s) corresponding to the river planform.' )
             for ifeat in xrange( 1, num_features+1 ):
                 c0 = np.column_stack( np.where( mask_lab==ifeat ) )[0]
@@ -503,7 +503,7 @@ def migration_rates( axisfiles, migdir, columns=(0,1), show=False, pfreq=1 ):
         data = np.vstack( (dx, dy, dz, ICWTC, BI, B12, BUD) )
         save( migfile, data )
 
-    colors = [ plt.cm.jet(x) for x in np.linspace( 0, 1, len(axisfiles) ) ]
+    colors = [ plt.jet(x) for x in np.linspace( 0, 1, len(axisfiles) ) ]
     lws = np.linspace( 1, 5, len(axisfiles) )
 
     if show:
