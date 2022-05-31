@@ -1,0 +1,15 @@
+build/lib/pyris/__init__.py
+build/lib/pyris/config/__init__.py
+build/lib/pyris/config/config.py
+build/lib/pyris/misc/__init__.py
+build/lib/pyris/misc/misc.py
+build/lib/pyris/raster/__init__.py
+build/lib/pyris/raster/bars.py
+build/lib/pyris/raster/morphology.py
+build/lib/pyris/raster/pruner.py
+build/lib/pyris/raster/segmentation.py
+build/lib/pyris/vector/__init__.py
+build/lib/pyris/vector/axis.py
+build/lib/pyris/vector/interpolation.py
+build/lib/pyris/vector/migration.py
+build/scripts-3.9/pyris

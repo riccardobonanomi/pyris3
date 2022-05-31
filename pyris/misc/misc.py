@@ -14,7 +14,7 @@ from matplotlib import pyplot as plt
 from matplotlib.gridspec import GridSpec
 from skimage.io import imread
 from skimage.morphology import closing, disk
-import gdal
+from osgeo import gdal
 import warnings
 
 # Matplotlib Setting
