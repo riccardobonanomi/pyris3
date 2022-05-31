@@ -19,6 +19,7 @@ import os, sys
 import numpy as np
 import pickle
 from matplotlib import pyplot as plt
+from matplotlib import cm
 from skimage import morphology as mm
 from skimage.util import img_as_ubyte
 from skimage.io import imread
