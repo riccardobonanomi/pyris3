@@ -280,7 +280,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
                 if yearday==lyearday:
                     bg = imread(os.path.join( l, os.path.basename(l).strip()+'_B1.TIF' ))
                     break
-        GeoTransf = pickle.load( open(geofile) ) if geofile is not None else None
+        GeoTransf = pickle.load( open(geofile, 'rb') ) if geofile is not None else None
         mask = np.load( maskfile )
         bw = np.where( mask>0, 1, 0 )
         bw = MaskClean( bw, bg )()
@@ -426,7 +426,6 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
         print('Processing file %s' % ( maskfile ))
 
         # Load mask, skeleton and GeoFile
-        # if use_geo: GeoTransf = pickle.load( open( geofile ) )
         if use_geo: GeoTransf = pickle.load( open( geofile, 'rb' ) )
         mask = np.load( maskfile ).astype( int )
         skel = np.load( skelfile ).astype( int )
@@ -580,7 +579,7 @@ def bars_detection( landsat_dirs, geodir, axisdir, migdir, bardir, show=False ):
 
         print('Processing file %s' % basename)
 
-        GeoTransf = pickle.load( open(geo_file) )
+        GeoTransf = pickle.load( open(geo_file, 'rb') )
         axis = load( axis_file )
         mig = load( mig_file )
 
