@@ -426,7 +426,8 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
         print('Processing file %s' % ( maskfile ))
 
         # Load mask, skeleton and GeoFile
-        if use_geo: GeoTransf = pickle.load( open( geofile ) )
+        # if use_geo: GeoTransf = pickle.load( open( geofile ) )
+        if use_geo: GeoTransf = pickle.load( open( geofile, 'rb' ) )
         mask = np.load( maskfile ).astype( int )
         skel = np.load( skelfile ).astype( int )
         num_features = mask.max()
