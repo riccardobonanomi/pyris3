@@ -158,7 +158,7 @@ class AxisReader( object ):
             i0, j0 = I[-1], J[-1] # Previous Point
             self.hits[i0,j0] = 0 # Set it to 0 in the Hit&Miss Matrix
             seed = self.hits[i0-1:i0+2, j0-1:j0+2] # 3x3 neighboring element
-            pos = zip( *np.where( seed > 0 ) ) # Positive neighbors
+            pos = list(zip( *np.where( seed > 0 ) )) # Positive neighbors
 
             if len( pos ) == 0: # End Point of the channel found
                 break
