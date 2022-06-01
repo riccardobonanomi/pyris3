@@ -370,7 +370,7 @@ def skeletonize_all( maskdir, skeldir, config ):
                     if s == 4:
                         matrix = p.strides[i,j].copy()
                         matrix[1,1] = 0
-                        pos = zip( *np.where( matrix > 0 ) )
+                        pos = list(zip( *np.where( matrix > 0 ) ))
                         dists = np.zeros( len(pos) )
                         for ip in range( len(pos) ):
                             ipp = ip+1 if ip+1 < len(pos) else 0
