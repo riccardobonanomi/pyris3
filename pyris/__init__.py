@@ -446,7 +446,8 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
         # Interpolation
         print('parametric cublic spline interpolation of the centerline...')
         step = int( max( 1, 0.5*int( axis.B.mean() ) ) ) # Discard points if too close
-        Npoints = axis.L / (0.25*axis.B.mean()) # Spacing = width/4
+        # Npoints = axis.L / (0.25*axis.B.mean()) # Spacing = width/4
+        Npoints = int(axis.L / (0.25*axis.B.mean())) # Spacing = width/4
         PCSs = 0.25*axis.x[::step].size # Degree of smoothness = n. of data points
         
         # Pixelled PCS
