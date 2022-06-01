@@ -54,7 +54,7 @@ class AxisMigration( object ):
             s = np.cumsum( ds )
             theta = np.arctan2( dy, dx )
             rtheta = theta.copy()
-            for i in xrange( 1, theta.size ): # Set theta continuous
+            for i in range( 1, theta.size ): # Set theta continuous
                 if (theta[i]-theta[i-1])/np.pi > +1.9: theta[i] -=2*np.pi
                 if (theta[i]-theta[i-1])/np.pi < -1.9: theta[i] +=2*np.pi
             c = -np.gradient( theta ) / np.gradient( s )
@@ -135,8 +135,8 @@ class AxisMigration( object ):
         self.CI12 = [] # Points to which the First Planform Points Converge to the Second Planform
 
         if self.method == 'distance':            
-            self.CI1 = [ [] for _ in xrange( len( self.data ) ) ]
-            self.CI12 = [ [] for _ in xrange( len( self.data ) ) ]
+            self.CI1 = [ [] for _ in range( len( self.data ) ) ]
+            self.CI12 = [ [] for _ in range( len( self.data ) ) ]
             for i, (d1, d2) in self.IterData2():
                 mask = np.isfinite( self.I[i+1] )
                 self.CI1[i+1] = self.I[i+1][ mask ].astype( int )
@@ -179,7 +179,7 @@ class AxisMigration( object ):
                     C12 = np.delete( C12, idxs )
                     
                 while np.any(C12[:-1]>C12[1:]):
-                    for j in xrange( 1, C1.size ):
+                    for j in range( 1, C1.size ):
                         l, r = j-1, j
                         cl, cr = C12[l], C12[r]
                         if cr < cl:
@@ -272,7 +272,7 @@ class AxisMigration( object ):
         P = np.array( [ x2[i2], y2[i2] ] )
         R = np.array( [ np.cos(a), np.sin(a) ] ) * L
         hits = []
-        for i in xrange( 1, x1.size ):
+        for i in range( 1, x1.size ):
             Q = np.array( [ x1[i-1], y1[i-1] ] )
             S = np.array( [ x1[i], y1[i] ] ) - Q
             # Bound angle
