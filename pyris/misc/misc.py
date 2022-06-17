@@ -75,7 +75,7 @@ def LoadLandsatData( dirname ):
     '''
     Load Relevant Bands for the Current Landsat Data
     '''
-    if any( [os.path.split(dirname)[-1].startswith( s ) for s in ['LC8', 'LC08']] ): bidx = range( 2, 8 )
+    if any( [os.path.split(dirname)[-1].startswith( s ) for s in ['LC8', 'LC08', 'LC9', 'LC09']] ): bidx = range( 2, 8 )
     else: bidx = [1,2,3,4,5,7]
     base = os.path.join( dirname, os.path.basename(dirname) )
     ext = '.TIF'
