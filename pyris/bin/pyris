@@ -49,6 +49,7 @@ parser.add_argument( '--show', action='store_true', help='show results after com
 
 # Parse Arguments
 args = parser.parse_args()
+print('Using mask extracted with gee - experimental code')
 
 # Initialize Config File
 # ----------------------
