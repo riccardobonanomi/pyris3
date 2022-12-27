@@ -159,7 +159,9 @@ if args.segmentation:
 # Import .tif mask from gee
 # --------------------
 if args.gee_mask_import is not None:
-    print('Using mask extracted with gee - experimental code')
+    # TODO remove message when code is working properly
+    message = 'Using mask extracted with gee - experimental code'
+    print; print(message); print('-'*len(message))
     from pyris import import_gee_mask
     title = 'Importing mask obtained with gee outside PyRIS'
     print; print(title); print('-'*len(title))
