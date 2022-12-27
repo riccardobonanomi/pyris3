@@ -299,6 +299,10 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
             print('skipping')
     return None
 
+def import_gee_mask():
+    print('is working')
+    return None
+
 
 def skeletonize_all( maskdir, skeldir, config ):
     '''

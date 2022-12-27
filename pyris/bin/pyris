@@ -30,6 +30,8 @@ parser.add_argument( '--output', type=str, help='where merged landsat are to be 
 parser.add_argument( '-S', '--segmentation', action='store_true', help='perform segmentation of all the landsat folders' )
 parser.add_argument( '--label', type=str, help='if auto, pyris will try to label masks by itself. other options are max and all' )
 parser.add_argument( '--clean-mask', nargs='*', help='manually remove some branches' )
+# gee .tif mask import
+parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='import gee .tif masks obtained outside PyRIS' )
 # Skeletonization
 parser.add_argument( '-K', '--skeletonization', action='store_true', help='skeletonize masks' )
 # Axis Extraction
@@ -49,7 +51,6 @@ parser.add_argument( '--show', action='store_true', help='show results after com
 
 # Parse Arguments
 args = parser.parse_args()
-print('Using mask extracted with gee - experimental code')
 
 # Initialize Config File
 # ----------------------
@@ -135,12 +136,14 @@ if args.config is not None:
 # ------------------------
 if args.config is not None:
     geodir = os.path.join( cf.get( 'Data', 'output' ), 'geotransf' )
+    geedir = os.path.join( cf.get( 'Data', 'output' ), 'geedir' )
     maskdir = os.path.join( cf.get( 'Data', 'output' ), 'mask' )
     skeldir = os.path.join( cf.get( 'Data', 'output' ), 'skeleton' )
     axisdir = os.path.join( cf.get( 'Data', 'output' ), 'axis' )
     migdir = os.path.join( cf.get( 'Data', 'output' ), 'migration' )
     bardir = os.path.join( cf.get( 'Data', 'output' ), 'bars' )
-    landsat_dirs = sorted( [ os.path.join(cf.get('Data','input'), f) for f in os.listdir(cf.get('Data','input'))
+    if args.gee_mask_import is None:
+        landsat_dirs = sorted( [ os.path.join(cf.get('Data','input'), f) for f in os.listdir(cf.get('Data','input'))
                              if os.path.isdir( os.path.join(cf.get('Data','input'), f) ) ] )
 
 # Perform Image Segmentation
@@ -152,6 +155,17 @@ if args.segmentation:
     title = 'Running image segmentation over the external directory: %s' % cf.get( 'Data', 'input' )
     print; print(title); print('-'*len(title))
     segment_all( landsat_dirs, geodir, cf, maskdir, auto_label=args.label )
+
+# Import .tif mask from gee
+# --------------------
+if args.gee_mask_import is not None:
+    print('Using mask extracted with gee - experimental code')
+    from pyris import import_gee_mask
+    title = 'Importing mask obtained with gee outside PyRIS'
+    print; print(title); print('-'*len(title))
+    import_gee_mask()
+
+
 
 # Manually Clean Masks
 # --------------------
