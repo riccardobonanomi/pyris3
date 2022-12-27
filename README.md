@@ -40,5 +40,10 @@ On Windows
       pyris [args]
 * 'pyris --help' provides information on the required arguments
 
-### Updated to python 3
+### Updated to python 3 ###
 Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
+
+## Beta Google Earth Engine (gee) introduction - UNDER DEVELOPMENT ###
+- the original-branch shows the python3 main without changes
+- the gee-mask-branch contains the code to use out of code extracted masks with gee
+- the gee-incode-branch will contain the mask extraction with gee directly in the code alongside the original local mask extraction
