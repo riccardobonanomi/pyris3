@@ -174,7 +174,7 @@ if args.skeletonization:
     if not os.path.isdir( skeldir ): os.makedirs( skeldir )
     if args.mask_dir is not None: maskdir = args.mask_dir
     from pyris import skeletonize_all
-    title = 'Skeltonizing masks masks in internal directory: %s' % cf.get( 'Data', 'output' )
+    title = 'Skeltonizing masks in internal directory: %s' % cf.get( 'Data', 'output' )
     print; print(title); print('-'*len(title))
     skeletonize_all( maskdir, skeldir, cf )
 
