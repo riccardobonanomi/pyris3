@@ -299,8 +299,50 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
             print('skipping')
     return None
 
-def import_gee_mask():
-    print('is working')
+def import_gee_mask(geedir, geodir, maskdir ):
+    '''
+    import_gee_mask(geedir, geodir, maskdir )
+    ===========================================
+
+    Import .tif masks generated with gee outside PyRIS
+     
+    Arguments
+    ---------
+    geedir            directory containing all the mask files
+    geodir            directory where GeoTransf instances are stored (default None)
+    maskdir           directory containing all the mask files
+
+    
+    '''
+    to_skip = []
+    # Iterate over gee directory
+    geemasks = sorted(os.listdir(geedir))
+    for geemask in geemasks:
+        # input
+        geename, __ = os.path.splitext(geemask)
+        year = geename[-12:-8]
+        jday = 213 # TODO FIX THIS
+        name = '_'.join( ( year, jday ) )
+        # output
+        maskfile = os.path.join( maskdir, '.'.join( (name, 'npy') ) )
+        geofile = os.path.join( geodir, '.'.join( (name, 'p') ) )
+
+        # skip the files which have already been processes
+        if all( map( os.path.isfile, [ maskfile, geofile ] ) ):
+            print
+            print('data found for file %s - skipping '  % ( geename ))
+            to_skip.append( name )
+            continue
+
+        print
+        print('Loading %s' % ( geename ))
+
+        mask, GeoTransf = LoadGeeMask( geedir + geemask )
+
+        print('saving  mask and GeoTransf data...')
+        np.save( maskfile, mask )
+        with open( geofile, 'wb' ) as gf: pickle.dump( GeoTransf, gf )
+
     return None
 
 
