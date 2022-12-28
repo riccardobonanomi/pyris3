@@ -162,6 +162,8 @@ if args.gee_mask_import is not None:
     # TODO remove message when code is working properly
     message = 'Using mask extracted with gee - experimental code'
     print; print(message); print('-'*len(message))
+    if not os.path.isdir( maskdir ): os.makedirs( maskdir )
+    if not os.path.isdir( geodir ): os.makedirs( geodir )
     from pyris import import_gee_mask
     title = 'Importing mask obtained with gee outside PyRIS'
     print; print(title); print('-'*len(title))
