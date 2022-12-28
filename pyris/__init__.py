@@ -337,7 +337,7 @@ def import_gee_mask(geedir, geodir, maskdir ):
         print
         print('Loading %s' % ( geename ))
 
-        mask, GeoTransf = LoadGeeMask( geedir + geemask )
+        mask, GeoTransf = LoadGeeMask( os.path.join( geedir, geemask ) )
 
         print('saving  mask and GeoTransf data...')
         np.save( maskfile, mask )
