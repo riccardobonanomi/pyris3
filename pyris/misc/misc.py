@@ -93,13 +93,13 @@ def LoadLandsatData( dirname ):
         }
     return bands, GeoTransf
 
-def LoadGeeMask( maskname ):
+def LoadGeeMask( maskfile ):
     '''
     Load gee .tif mask for the current gee data
     '''
-    mask = imread( maskname )
+    mask = imread( maskfile )
 
-    geo = gdal.Open( maskname )
+    geo = gdal.Open( maskfile )
     GeoTransf = {    
         'PixelSize' : abs( geo.GetGeoTransform()[1] ),
         'X' : geo.GetGeoTransform()[0],
