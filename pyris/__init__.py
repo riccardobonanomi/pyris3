@@ -321,7 +321,7 @@ def import_gee_mask(geedir, geodir, maskdir ):
         # input
         geename, __ = os.path.splitext(geemask)
         year = geename[-12:-8]
-        jday = 213 # TODO FIX THIS
+        jday = str(213) # TODO CHANGE THIS WITH REAL DAY
         name = '_'.join( ( year, jday ) )
         # output
         maskfile = os.path.join( maskdir, '.'.join( (name, 'npy') ) )
