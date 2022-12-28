@@ -238,7 +238,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
     return None
 
 
-def import_gee_mask(geedir, geodir, maskdir ):
+def import_gee_mask(config, geedir, geodir, maskdir ):
     '''
     import_gee_mask(geedir, geodir, maskdir )
     ===========================================
