@@ -238,12 +238,76 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
     return None
 
 
+def import_gee_mask(config, geedir, geodir, maskdir ):
+    # TODO implement this
+    '''
+    import_gee_mask(geedir, geodir, maskdir )
+    ===========================================
+
+    Import .tif masks generated with gee outside PyRIS and cleans it
+     
+    Arguments
+    ---------
+    geedir            directory containing all the mask files
+    geodir            directory where GeoTransf instances are stored (default None)
+    maskdir           directory containing all the mask files
+
+    
+    '''
+    to_skip = []
+    # Iterate over gee directory
+    geemasks = sorted(os.listdir(geedir))
+    for geemask in geemasks:
+        # input
+        geename, __ = os.path.splitext(geemask)
+        year = geename[-12:-8]
+        jday = str(213) # TODO CHANGE THIS WITH REAL DAY
+        name = '_'.join( ( year, jday ) )
+        # output
+        maskfile = os.path.join( maskdir, '.'.join( (name, 'npy') ) )
+        geofile = os.path.join( geodir, '.'.join( (name, 'p') ) )
+
+        # skip the files which have already been processes
+        if all( map( os.path.isfile, [ maskfile, geofile ] ) ):
+            print
+            print('data found for file %s - skipping '  % ( geename ))
+            to_skip.append( name )
+            continue
+
+        print
+        print('Loading %s' % ( geename ))
+
+        # Loading geemask and georeferencing data
+        mask, GeoTransf = LoadGeeMask( os.path.join( geedir, geemask ) )
+
+        print('applying BW masks...')
+
+        # Set Dimensions
+        pixel_width = config.getfloat('Data', 'channel_width') / GeoTransf['PixelSize'] # Channel width in Pixels
+        radius = 2 * pixel_width # Circle Radius for Local Thresholding
+
+        # Image Cleaning
+        print('cleaning mask...')
+        mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # One Hundred Widths of Channel at Least is Required
+        radius = max( np.floor( 0.5 * ( pixel_width ) ) - 3, 0 )
+        mask = mm.binary_opening( mask, mm.disk( radius ) ) # Break Small Connectins
+        mask = CleanIslands( mask, 10*pixel_width**2 ) # Clean Holes Inside the Planform
+        mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # Remove New Small Objects
+        mask = mask.astype( int )
+
+        print('saving  mask and GeoTransf data...')
+        np.save( maskfile, mask )
+        with open( geofile, 'wb' ) as gf: pickle.dump( GeoTransf, gf )
+
+    return None
+
+
 def import_clean_gee_mask(config, geedir, geodir, maskdir ):
     '''
     import_clean_gee_mask(geedir, geodir, maskdir )
     ===========================================
 
-    Import .tif masks generated with gee outside PyRIS
+    Import clean .tif masks generated with gee outside PyRIS
      
     Arguments
     ---------
