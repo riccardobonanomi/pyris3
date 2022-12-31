@@ -295,7 +295,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
             sy, sx = slice( max(0, int(xx[0])), min(black.shape[1],int(xx[1])) ), slice( max(0,int(yy[0])), min(int(yy[1]),black.shape[0]) )
             black[ sx, sy ] = 0
 
-        mask =  np.where(np.logical_or(mask==0,black==0), np.nan, mask)
+        # mask =  np.where(np.logical_or(mask==0,black==0), np.nan, mask)
 
         # Set Dimensions
         pixel_width = config.getfloat('Data', 'channel_width') / GeoTransf['PixelSize'] # Channel width in Pixels
@@ -305,7 +305,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
         print('nodata dilation...')
         nanmask = np.where( mask==0, 1, 0 )
         nanmask = mm.binary_dilation( nanmask, mm.disk( 30 ) )
-        mask = np.where( nanmask==1, 0, mask*black )
+        mask = np.where( nanmask==1, 0, 1 ) # mask*black )
 
         # Image Cleaning
         print('cleaning mask...')
