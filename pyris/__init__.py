@@ -238,7 +238,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
     return None
 
 
-def import_gee_mask(config, geedir, geodir, maskdir ):
+def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
     # TODO implement this
     '''
     import_gee_mask(geedir, geodir, maskdir )
@@ -248,9 +248,11 @@ def import_gee_mask(config, geedir, geodir, maskdir ):
      
     Arguments
     ---------
-    geedir            directory containing all the mask files
+    config            PyRIS' RawConfigParser instance
+    geedir            directory containing all the .tif mask files
     geodir            directory where GeoTransf instances are stored (default None)
     maskdir           directory containing all the mask files
+    auto_label        mask selection method if more than one object occur (default None)
 
     
     '''
@@ -279,12 +281,31 @@ def import_gee_mask(config, geedir, geodir, maskdir ):
 
         # Loading geemask and georeferencing data
         mask, GeoTransf = LoadGeeMask( os.path.join( geedir, geemask ) )
-
+       
         print('applying BW masks...')
+
+        # GeoReferencing of White and Black masks
+        bw_masks_georef = GeoReference( GeoTransf )
+
+        # Apply Black Mask
+        black = np.ones( mask.shape, dtype=int )
+        black_masks = eval( config.get( 'Segmentation', 'black_masks' ) )
+        for s in black_masks:
+            xx, yy = bw_masks_georef.RefCurve( np.asarray(s[2:]), np.asarray(s[:2]), inverse=True )
+            sy, sx = slice( max(0, int(xx[0])), min(black.shape[1],int(xx[1])) ), slice( max(0,int(yy[0])), min(int(yy[1]),black.shape[0]) )
+            black[ sx, sy ] = 0
+
+        mask =  np.where(np.logical_or(mask==0,black==0), np.nan, mask)
 
         # Set Dimensions
         pixel_width = config.getfloat('Data', 'channel_width') / GeoTransf['PixelSize'] # Channel width in Pixels
         radius = 2 * pixel_width # Circle Radius for Local Thresholding
+        
+        # Mask Landsat NoData
+        print('nodata dilation...')
+        nanmask = np.where( mask==0, 1, 0 )
+        nanmask = mm.binary_dilation( nanmask, mm.disk( 30 ) )
+        mask = np.where( nanmask==1, 0, mask*black )
 
         # Image Cleaning
         print('cleaning mask...')
@@ -294,6 +315,47 @@ def import_gee_mask(config, geedir, geodir, maskdir ):
         mask = CleanIslands( mask, 10*pixel_width**2 ) # Clean Holes Inside the Planform
         mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # Remove New Small Objects
         mask = mask.astype( int )
+
+        # Label Masks - we need to perform a rotation in order to have labels going from the largest to the smallest
+        rot_angle = { 'b': 0, 'l': 1, 't': 2, 'r': 3 } # Counter-clockwise rotationan angle
+        mask = np.rot90( mask, rot_angle[config.get( 'Data', 'flow_from' )] )
+        mask_lab, num_features = ndimage.measurements.label( mask )
+        # Rotate back to the original
+        mask = np.rot90( mask, -rot_angle[config.get( 'Data', 'flow_from' )] )
+        mask_lab = np.rot90( mask_lab, -rot_angle[config.get( 'Data', 'flow_from' )] )
+        print('labelling feature in channel mask...')
+        print('found %s features in river mask %s...' % ( num_features, os.path.basename(maskfile) ))
+
+        if auto_label is None:
+            plt.figure()
+            plt.imshow( mask_lab, cmap=cm.nipy_spectral, interpolation='none' )
+            plt.title( 'Indentify the label(s) corresponding to the river planform.' )
+            for ifeat in range( 1, num_features+1 ):
+                c0 = np.column_stack( np.where( mask_lab==ifeat ) )[0]
+                plt.text( c0[1], c0[0], '%s' % ifeat, fontsize=30, bbox=dict( facecolor='white' ) )
+            plt.show()
+            labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space): ' ).split(' ')
+            mask *= 0
+            for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
+        else:
+            # The largest element in the image will be used.
+            warnings.warn( 'automated labels may lead to erroneous planforms! please check your results!' )
+            if auto_label == 'auto':
+                if config.get( 'Segmentation', 'thresholding' ) == 'local': auto_label = 'max'
+                elif config.get( 'Segmentation', 'thresholding' ) == 'global': auto_label = 'all'
+            if auto_label == 'all':
+                mask = mask_lab
+            elif auto_label == 'max':
+                labs = np.unique( mask_lab[mask_lab>0] )
+                areas = np.zeros( labs.size )
+                for ilab, lab in enumerate( labs ):
+                    rp = regionprops( (mask_lab==lab).astype(int) )
+                    [xl, yl, xr, yr] = [ int(b) for b in rp[0].bbox ]
+                    areas[ilab] = abs( (xr-xl)*(yr-yl) )
+                mask = mask_lab==labs[ areas.argmax() ]
+            else:
+                e = "labelling method '%s' not known. choose either 'auto', 'max', 'all' or None" % auto_label
+                raise ValueError(e)
 
         print('saving  mask and GeoTransf data...')
         np.save( maskfile, mask )
@@ -311,7 +373,8 @@ def import_clean_gee_mask(config, geedir, geodir, maskdir ):
      
     Arguments
     ---------
-    geedir            directory containing all the mask files
+    config            PyRIS' RawConfigParser instance
+    geedir            directory containing all the .tif clean mask files
     geodir            directory where GeoTransf instances are stored (default None)
     maskdir           directory containing all the mask files
 
@@ -342,8 +405,6 @@ def import_clean_gee_mask(config, geedir, geodir, maskdir ):
 
         # Loading geemask and georeferencing data
         mask, GeoTransf = LoadGeeMask( os.path.join( geedir, geemask ) )
-
-        print('applying BW masks...')
 
         # Set Dimensions
         pixel_width = config.getfloat('Data', 'channel_width') / GeoTransf['PixelSize'] # Channel width in Pixels
