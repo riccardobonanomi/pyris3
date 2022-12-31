@@ -137,8 +137,8 @@ if args.config is not None:
 # ------------------------
 if args.config is not None:
     geodir = os.path.join( cf.get( 'Data', 'output' ), 'geotransf' )
-    geedir = os.path.join( cf.get( 'Data', 'output' ), 'geedir' )
-    geecleandir = os.path.join( cf.get( 'Data', 'output' ), 'geecleandir' )
+    geedir = os.path.join( cf.get( 'Data', 'output' ), 'gee' )
+    geecleandir = os.path.join( cf.get( 'Data', 'output' ), 'geeclean' )
     maskdir = os.path.join( cf.get( 'Data', 'output' ), 'mask' )
     skeldir = os.path.join( cf.get( 'Data', 'output' ), 'skeleton' )
     axisdir = os.path.join( cf.get( 'Data', 'output' ), 'axis' )
