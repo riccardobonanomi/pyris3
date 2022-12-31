@@ -262,7 +262,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
     for geemask in geemasks:
         # input
         geename, __ = os.path.splitext(geemask)
-        year = geename[-12:-8]
+        year = geename[-4 :-1]
         jday = str(213) # TODO CHANGE THIS WITH REAL DAY
         name = '_'.join( ( year, jday ) )
         # output
