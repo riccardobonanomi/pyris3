@@ -5,11 +5,14 @@ PyRIS - Python RIvers by Satellite
 ### Extract River Features from Landsat Multispectral Data ###
 
 * Contains: pyris (module), pyris (cli script)
-* Version 2.0 (development)
+* Version 3.0 (development)
 
 ### Who do I talk to? ###
 
-* Repo owner or admin: Federico Monegaglia (f.monegaglia@gmail.com)
+* Original author: Federico Monegaglia (f.monegaglia@gmail.com)
+* Original repo: https://github.com/fmonegaglia/pyris
+* Repo owner or admin: Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
+
 
 ### Install Instructions ###
 
@@ -19,10 +22,12 @@ On Unix/Linux
 1) Install pip:
      sudo apt-get install python-pip
 
-2) Install dependencies for PyRIS:
-     sudo pip install numpy scipy matplotlib scikit-image gdal
+3) Install gdal (https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)
 
-3) Execute setup script to install PyRIS:
+2) Install dependencies for PyRIS:
+     sudo pip install numpy scipy matplotlib scikit-image imagecodecs gdal
+
+4) Execute setup script to install PyRIS:
      sudo python setup.py install
 
 On Windows

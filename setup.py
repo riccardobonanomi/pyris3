@@ -42,14 +42,14 @@ long_description = '\n'.join((
 
 setup(
     name = 'pyris',
-    version = '1.1',
+    version = '3.0',
     author = 'Federico Monegaglia and Riccardo Bonanomi',
     author_email = 'f.monegaglia@gmail.com',
     maintainer = 'Riccardo Bonanomi',
     maintainer_email = 'riccardo.bonanomi@unitn.it',
     description = description,
     long_description = long_description,
-    url = 'https://github.com/fmonegaglia/pyris',
+    url = 'https://github.com/riccardobonanomi/pyris3',
     install_requires = [ 'numpy', 'scipy', 'matplotlib', 'scikit-image', 'gdal', 'imagecodecs' ],
     packages = [ 'pyris', 'pyris.config', 'pyris.misc', 'pyris.raster', 'pyris.vector' ],
     scripts = [pyris_script],

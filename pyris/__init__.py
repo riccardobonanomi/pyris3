@@ -31,14 +31,14 @@ import datetime
 # Suppress Warnings
 warnings.filterwarnings("ignore")
 
-__author__ = 'Federico Monegaglia'
-__email__ = 'f.monegaglia@gmail.com'
-__version__ = '1.0'
-__year__ = '2016'
+__author__ = 'Federico Monegaglia and Riccardo Bonanomi'
+__email__ = 'riccardo.bonanomi@unitn.it'
+__version__ = '3.0'
+__year__ = '2023'
 
 __all__ = [
     # modules
-    'raster', 'vector', 'misc',
+    'raster', 'vector', 'misc'
     # pkg dataFcm
     '__author__', '__version__', '__email__', '__year__',
     # from standard packages
