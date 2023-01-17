@@ -281,18 +281,29 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
 
         # Loading geemask and georeferencing data
         mask, GeoTransf = LoadGeeMask( os.path.join( geedir, geemask ) )
-    
-        mask =  np.where(mask==0, np.nan, mask)
+
+        print('applying BW masks...')
+
+        # GeoReferencing of White and Black masks
+        bw_masks_georef = GeoReference( GeoTransf )
+
+        # Apply Black Mask
+        black = np.ones( mask.shape, dtype=int )
+        black_masks = eval( config.get( 'Segmentation', 'black_masks' ) )
+        for s in black_masks:
+            xx, yy = bw_masks_georef.RefCurve( np.asarray(s[2:]), np.asarray(s[:2]), inverse=True )
+            sy, sx = slice( max(0, int(xx[0])), min(black.shape[1],int(xx[1])) ), slice( max(0,int(yy[0])), min(int(yy[1]),black.shape[0]) )
+            black[ sx, sy ] = 0
 
         # Set Dimensions
         pixel_width = config.getfloat('Data', 'channel_width') / GeoTransf['PixelSize'] # Channel width in Pixels
         radius = 2 * pixel_width # Circle Radius for Local Thresholding
         
-        # Mask Landsat NoData
+         # Mask Landsat NoData
         print('nodata dilation...')
         nanmask = np.where( mask==0, 1, 0 )
         nanmask = mm.binary_dilation( nanmask, mm.disk( 30 ) )
-        mask = np.where( nanmask==1, 0, mask*1 )
+        mask = np.where( nanmask==1, 0, mask*black )
 
         # Image Cleaning
         print('cleaning mask...')

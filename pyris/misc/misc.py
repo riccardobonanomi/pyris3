@@ -97,7 +97,7 @@ def LoadGeeMask( maskfile ):
     '''
     Load gee .tif mask for the current gee data
     '''
-    mask = imread( maskfile )
+    mask = imread( maskfile, as_gray=True, plugin='gdal' )
 
     geo = gdal.Open( maskfile )
     GeoTransf = {    
