@@ -38,11 +38,13 @@ __year__ = '2023'
 
 __all__ = [
     # modules
-    'raster', 'vector', 'misc'
+     'config', 'raster', 'vector', 'misc'
     # pkg dataFcm
     '__author__', '__version__', '__email__', '__year__',
     # from standard packages
     'img_as_ubyte', 'imread', 'ndimage',
+    # config
+    'default_config'
     # misc
     'GeoReference', 'NaNs', 'MaskClean',
     # raster

@@ -1,4 +1,5 @@
 build/*
+dist/*
 pyris.egg-info/*
 dist/pyris-1.0-py3.9.egg
 pyris/bin/pyrisw.py
