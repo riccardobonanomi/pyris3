@@ -129,7 +129,6 @@ if args.config is not None:
         print('Configuration file %s created. Exiting.' % args.config)
         sys.exit()
 
-
 # ===================
 # Run PyRIS Functions
 # ===================
@@ -178,8 +177,6 @@ if args.clean_gee_mask_import:
     title = 'Importing clean mask obtained with gee outside PyRIS'
     print; print(title); print('-'*len(title))
     import_clean_gee_mask( cf, geecleandir, geodir, maskdir )
-
-
 
 # Manually Clean Masks
 # --------------------
