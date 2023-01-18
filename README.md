@@ -37,8 +37,10 @@ On Windows
 
 2) Add Python to your Path (https://docs.python.org/2/using/windows.html)
 
-3) Install GDAL through Conda Prompt
+3) Install GDAL 
+     - through Conda Prompt
        conda install gdal
+     - (https://sandbox.oarc.ucla.edu/tutorials/installing-gdal-for-windows)
 
 ### Run Instruction ###
 * Call pyris from the command line:
