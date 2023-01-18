@@ -11,7 +11,6 @@ import configparser as ConfigParser
 def default_config():
     '''Set up a configuration file for PyRIS'''
     
-    
     cf = ConfigParser.RawConfigParser()
     
     cf.add_section( 'Data' )
