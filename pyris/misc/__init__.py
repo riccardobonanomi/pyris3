@@ -1,7 +1,7 @@
 __all__ = [
-        'Intersection','LoadLandsatData', 'LoadGeeMask', 
+        'Intersection','LoadLandsatData', 'NaNs', 
         'Line2D', 'GeoReference', 'interactive_mask',
-        'MaskClean', 'NaNs',
+        'MaskClean',
             ]
 
 from .misc import *

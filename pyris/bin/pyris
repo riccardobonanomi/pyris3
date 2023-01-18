@@ -30,10 +30,6 @@ parser.add_argument( '--output', type=str, help='where merged landsat are to be 
 parser.add_argument( '-S', '--segmentation', action='store_true', help='perform segmentation of all the landsat folders' )
 parser.add_argument( '--label', type=str, help='if auto, pyris will try to label masks by itself. other options are max and all' )
 parser.add_argument( '--clean-mask', nargs='*', help='manually remove some branches' )
-# gee .tif mask import
-parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='import gee .tif masks obtained outside PyRIS to be cleaned' )
-# gee clean .tif mask import
-parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='import clean gee .tif masks obtained outside PyRIS' )
 # Skeletonization
 parser.add_argument( '-K', '--skeletonization', action='store_true', help='skeletonize masks' )
 # Axis Extraction
@@ -157,26 +153,6 @@ if args.segmentation:
     title = 'Running image segmentation over the external directory: %s' % cf.get( 'Data', 'input' )
     print; print(title); print('-'*len(title))
     segment_all( landsat_dirs, geodir, cf, maskdir, auto_label=args.label )
-
-# Import .tif mask from gee
-# --------------------
-# to be cleaned mask import
-if args.gee_mask_import:
-    if not os.path.isdir( maskdir ): os.makedirs( maskdir )
-    if not os.path.isdir( geodir ): os.makedirs( geodir )
-    from pyris import import_gee_mask
-    title = 'Importing to be cleaned mask obtained with gee outside PyRIS'
-    print; print(title); print('-'*len(title))
-    import_gee_mask( cf, geedir, geodir, maskdir, auto_label=args.label  )
-
-# clean mask import
-if args.clean_gee_mask_import:
-    if not os.path.isdir( maskdir ): os.makedirs( maskdir )
-    if not os.path.isdir( geodir ): os.makedirs( geodir )
-    from pyris import import_clean_gee_mask
-    title = 'Importing clean mask obtained with gee outside PyRIS'
-    print; print(title); print('-'*len(title))
-    import_clean_gee_mask( cf, geecleandir, geodir, maskdir )
 
 # Manually Clean Masks
 # --------------------
