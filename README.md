@@ -25,7 +25,7 @@ On Unix/Linux
 3) Install gdal (https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)
 
 2) Install dependencies for PyRIS:
-     sudo pip install numpy scipy matplotlib scikit-image imagecodecs gdal
+     sudo pip install numpy scipy matplotlib scikit-image gdal
 
 4) Execute setup script to install PyRIS:
      sudo python setup.py install
