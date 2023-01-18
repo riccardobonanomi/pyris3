@@ -22,9 +22,9 @@ On Unix/Linux
 1) Install pip:
      sudo apt-get install python-pip
 
-3) Install gdal (https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)
+2) Install gdal (https://mothergeo-py.readthedocs.io/en/latest/development/how-to/gdal-ubuntu-pkg.html)
 
-2) Install dependencies for PyRIS:
+3) Install dependencies for PyRIS:
      sudo pip install numpy scipy matplotlib scikit-image gdal
 
 4) Execute setup script to install PyRIS:
@@ -39,7 +39,7 @@ On Windows
 
 3) Install GDAL 
      - through Conda Prompt
-       conda install gdal
+          conda install gdal
      - (https://sandbox.oarc.ucla.edu/tutorials/installing-gdal-for-windows)
 
 ### Run Instruction ###
