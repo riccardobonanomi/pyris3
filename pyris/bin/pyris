@@ -163,9 +163,6 @@ if args.segmentation:
 # --------------------
 # to be cleaned mask import
 if args.gee_mask_import:
-    # TODO remove message when code is working properly
-    message = 'Using mask extracted with gee - experimental code'
-    print; print(message); print('-'*len(message))
     if not os.path.isdir( maskdir ): os.makedirs( maskdir )
     if not os.path.isdir( geodir ): os.makedirs( geodir )
     from pyris import import_gee_mask
