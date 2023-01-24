@@ -144,7 +144,7 @@ if args.config is not None:
     axisdir = os.path.join( cf.get( 'Data', 'output' ), 'axis' )
     migdir = os.path.join( cf.get( 'Data', 'output' ), 'migration' )
     bardir = os.path.join( cf.get( 'Data', 'output' ), 'bars' )
-    if args.gee_mask_import and args.clean_gee_mask_import:
+    if not args.gee_mask_import and not args.clean_gee_mask_import:
         landsat_dirs = sorted( [ os.path.join(cf.get('Data','input'), f) for f in os.listdir(cf.get('Data','input'))
                              if os.path.isdir( os.path.join(cf.get('Data','input'), f) ) ] )
 
