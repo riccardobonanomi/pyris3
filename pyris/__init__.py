@@ -266,7 +266,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
         # input
         geename, __ = os.path.splitext(geemask)
         year = geename[-4 :]
-        jday = str(213) # TODO CHANGE THIS WITH REAL DAY
+        jday = str(213) # ficticious day for summer envelope
         name = '_'.join( ( year, jday ) )
         # output
         maskfile = os.path.join( maskdir, '.'.join( (name, 'npy') ) )
@@ -386,7 +386,7 @@ def import_clean_gee_mask(config, geedir, geodir, maskdir ):
         # input
         geename, __ = os.path.splitext(geemask)
         year = geename[-12:-8]
-        jday = str(213) # TODO CHANGE THIS WITH REAL DAY
+        jday = str(213) # ficticious day for summer envelope
         name = '_'.join( ( year, jday ) )
         # output
         maskfile = os.path.join( maskdir, '.'.join( (name, 'npy') ) )
