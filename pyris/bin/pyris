@@ -32,8 +32,10 @@ parser.add_argument( '--label', type=str, help='if auto, pyris will try to label
 parser.add_argument( '--clean-mask', nargs='*', help='manually remove some branches' )
 # gee .tif mask import
 parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='import gee .tif masks obtained outside PyRIS to be cleaned' )
+parser.add_argument( '--gee-dir', type=str, help='dir in which to read ordered-by-name gee .tif mask' )
 # gee clean .tif mask import
 parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='import clean gee .tif masks obtained outside PyRIS' )
+parser.add_argument( '--gee-clean-dir', type=str, help='dir in which to read ordered-by-name gee clean .tif mask' )
 # Skeletonization
 parser.add_argument( '-K', '--skeletonization', action='store_true', help='skeletonize masks' )
 # Axis Extraction
@@ -167,7 +169,15 @@ if args.gee_mask_import:
     from pyris import import_gee_mask
     title = 'Importing to be cleaned mask obtained with gee outside PyRIS'
     print; print(title); print('-'*len(title))
-    import_gee_mask( cf, geedir, geodir, maskdir, auto_label=args.label  )
+    if args.gee_dir is None:
+        title = 'Extracting river mask from gee .tif mask in internal directory: %s' % cf.get( 'Data', 'output' )
+        print; print(title); print('-'*len(title))
+        import_gee_mask( cf, geedir, geodir, maskdir, auto_label=args.label )
+    else:
+        title = 'Extracting river mask from gee .tif mask in external directory: %s' % args.gee_dir
+        print; print(title); print('-'*len(title))
+        geedir = args.gee_dir
+        import_gee_mask( cf, geedir, geodir, maskdir, auto_label=args.label )
 
 # clean mask import
 if args.clean_gee_mask_import:
@@ -176,7 +186,15 @@ if args.clean_gee_mask_import:
     from pyris import import_clean_gee_mask
     title = 'Importing clean mask obtained with gee outside PyRIS'
     print; print(title); print('-'*len(title))
-    import_clean_gee_mask( cf, geecleandir, geodir, maskdir )
+    if args.gee_clean_dir is None:
+        title = 'Extracting river mask from clean gee .tif mask in internal directory: %s' % cf.get( 'Data', 'output' )
+        print; print(title); print('-'*len(title))
+        import_clean_gee_mask( cf, geecleandir, geodir, maskdir )
+    else:
+        title = 'Extracting river mask from clean gee .tif mask in external directory: %s' % args.gee_clean_dir
+        print; print(title); print('-'*len(title))
+        geecleandir =  args.gee_clean_dir
+        import_clean_gee_mask( cf, geecleandir, geodir, maskdir )
 
 # Manually Clean Masks
 # --------------------
