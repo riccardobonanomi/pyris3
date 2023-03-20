@@ -54,3 +54,6 @@ Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
 - the master branch contains the up-to-date working code -> as for 18/01/2023 is in sync with the gee-mask branch
 - the original branch contains the python3 main without changes
 - the gee-mask branch contains the code to use out of code extracted masks with gee -> now in sync with the master branch
+
+## New feature tracking
+- 3.1 -> added ability to skip masks when segmenting landsat or importing gee mask
