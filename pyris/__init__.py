@@ -218,7 +218,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
             for lab in labs: labssum += int(lab)
             if labssum<0:
                 to_skip.append( name )
-                print('skipping %s'  % ( landsatname ))
+                print('no feature chosen for file %s - skipping ' % ( landsatname ))
                 continue
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
@@ -344,7 +344,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
             for lab in labs: labssum += int(lab)
             if labssum<0:
                 to_skip.append( name )
-                print('skipping %s'  % ( geename ))
+                print('no feature chosen for file %s - skipping ' % ( geename ))
                 continue
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
