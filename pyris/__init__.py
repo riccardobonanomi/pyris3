@@ -214,6 +214,9 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
                 plt.text( c0[1], c0[0], '%s' % ifeat, fontsize=30, bbox=dict( facecolor='white' ) )
             plt.show()
             labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space): ' ).split(' ')
+            if labs is None:
+                to_skip.append( name )
+                continue
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
         else:
@@ -334,6 +337,9 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
                 plt.text( c0[1], c0[0], '%s' % ifeat, fontsize=30, bbox=dict( facecolor='white' ) )
             plt.show()
             labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space): ' ).split(' ')
+            if labs is None:
+                to_skip.append( name )
+                continue
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
         else:
