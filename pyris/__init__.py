@@ -213,7 +213,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
                 c0 = np.column_stack( np.where( mask_lab==ifeat ) )[0]
                 plt.text( c0[1], c0[0], '%s' % ifeat, fontsize=30, bbox=dict( facecolor='white' ) )
             plt.show()
-            labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space): ' ).split(' ')
+            labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space, to discard the mask insert a negative number): ' ).split(' ')
             labssum = 0
             for lab in labs: labssum += int(lab)
             if labssum<0:
@@ -339,7 +339,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
                 c0 = np.column_stack( np.where( mask_lab==ifeat ) )[0]
                 plt.text( c0[1], c0[0], '%s' % ifeat, fontsize=30, bbox=dict( facecolor='white' ) )
             plt.show()
-            labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space): ' ).split(' ')
+            labs = input( 'Please enter the label(s) do you want to use? (if more than one, separate them with a space, to discard the mask insert a negative number): ' ).split(' ')
             labssum = 0
             for lab in labs: labssum += int(lab)
             if labssum<0:
