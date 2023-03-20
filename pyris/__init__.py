@@ -143,7 +143,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
         name = '_'.join( ( year, jday ) )
         # output
         maskfile = os.path.join( maskdir, '.'.join( (name, 'npy') ) )
-        geofile = os.path.join( geodir, '.'.join( (name, 'p') ) )
+        geofile  = os.path.join( geodir,  '.'.join( (name, 'p'  ) ) )
 
         # skip the files which have already been processes
         if all( map( os.path.isfile, [ maskfile, geofile ] ) ):
@@ -273,7 +273,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
         name = '_'.join( ( year, jday ) )
         # output
         maskfile = os.path.join( maskdir, '.'.join( (name, 'npy') ) )
-        geofile = os.path.join( geodir, '.'.join( (name, 'p') ) )
+        geofile  = os.path.join( geodir,  '.'.join( (name, 'p'  ) ) )
 
         # skip the files which have already been processes
         if all( map( os.path.isfile, [ maskfile, geofile ] ) ):
