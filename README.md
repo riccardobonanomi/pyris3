@@ -1,37 +1,37 @@
-# README #
+# README
 
 PyRIS - Python RIvers by Satellite
 
-### Extract River Features from Landsat Multispectral Data ###
+### Extract River Features from Landsat Multispectral Data
 
 * Contains: pyris (module), pyris (cli script)
 * Version 3.1.1 (development)
 * updated 2023/04/13
 
-### Who do I talk to? ###
+### Who do I talk to?
 
 * Original author: Federico Monegaglia (f.monegaglia@gmail.com)
 * Original repo: https://github.com/fmonegaglia/pyris
 * Repo owner or admin: Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
 * Current repo: https://github.com/riccardobonanomi/pyris3
 
-### Updated to python 3 and added GEE capability ###
+### Updated to python 3 and added GEE capability
 Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
 
-### Repository branch description ###
+### Repository branch description
 - the master branch contains the up-to-date working code
 - the original branch contains the original code converted to python 3
 
-## Version tracking
+### Version tracking
 - 1.0   (2018) 	 -> PyRIS deployment
 - 3.0.0 (2022)       -> Converted to python 3
 - 3.1.0 (2022)       -> Added GEE mask analysis capability
 - 3.1.1 (2023/03/20) -> Added ability to skip masks when segmenting Landsat or importing GEE mask
 
-### Install Instructions ###
-
-On Unix/Linux
 -------------
+### Install Instructions
+
+#### On Unix/Linux
 
 1) Install pip:
      sudo apt-get install python-pip
@@ -44,8 +44,7 @@ On Unix/Linux
 4) Execute setup script to install PyRIS:
      sudo python setup.py install
 
-On Windows
-----------
+#### On Windows
 
 1) Install Anaconda (https://www.continuum.io/downloads)
 
@@ -56,7 +55,7 @@ On Windows
           conda install gdal
      - (https://sandbox.oarc.ucla.edu/tutorials/installing-gdal-for-windows)
 
-### Run Instruction ###
+### Run Instruction
 * Call pyris from the command line:
       pyris [args]
 * 'pyris --help' provides information on the required arguments
