@@ -6,13 +6,14 @@ PyRIS - Python RIvers by Satellite
 
 * Contains: pyris (module), pyris (cli script)
 * Version 3.1.1 (development)
-* updated 2023/03/20
+* updated 2023/04/13
 
 ### Who do I talk to? ###
 
 * Original author: Federico Monegaglia (f.monegaglia@gmail.com)
 * Original repo: https://github.com/fmonegaglia/pyris
 * Repo owner or admin: Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
+* Current repo: 
 
 
 ### Install Instructions ###
@@ -48,15 +49,15 @@ On Windows
       pyris [args]
 * 'pyris --help' provides information on the required arguments
 
-### Updated to python 3 ###
+### Updated to python 3 and added GEE capability ###
 Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
 
-## Beta Google Earth Engine (gee) introduction - UNDER DEVELOPMENT ###
-- the master branch contains the up-to-date working code -> as for 18/01/2023 is in sync with the gee-mask branch
-- the original branch contains the python3 main without changes
-- the gee-mask branch contains the code to use out of code extracted masks with gee -> now in sync with the master branch
+### Repository branch description ###
+- the master branch contains the up-to-date working code
+- the original branch contains the original code converted to python 3
 
-## New feature tracking
-- 3.0.0              -> converted to python 3
-- 3.1.0              -> added gee capability
-- 3.1.1 (2023/03/20) -> added ability to skip masks when segmenting landsat or importing gee mask
+## Version tracking
+- 1.0   (2018) 	 -> PyRIS deployment
+- 3.0.0 (2022)       -> Converted to python 3
+- 3.1.0 (2022)       -> Added GEE mask analysis capability
+- 3.1.1 (2023/03/20) -> Added ability to skip masks when segmenting Landsat or importing GEE mask
