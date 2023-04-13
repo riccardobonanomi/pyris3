@@ -12,11 +12,8 @@ PyRIS - Python RIvers by Satellite
 
 * Original author: Federico Monegaglia (f.monegaglia@gmail.com)
 * Original repo: https://github.com/fmonegaglia/pyris
-* Repo owner or admin: Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
+* Current repo owner: Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
 * Current repo: https://github.com/riccardobonanomi/pyris3
-
-### Updated to python 3 and added GEE capability
-Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
 
 ### Repository branch description
 - the master branch contains the up-to-date working code
