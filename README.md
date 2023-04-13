@@ -20,10 +20,10 @@ PyRIS - Python RIvers by Satellite
 - the original branch contains the original code converted to python 3
 
 ### Version tracking
-- 1.0   (2018) 	 -> PyRIS deployment
-- 3.0.0 (2022)       -> Converted to python 3
-- 3.1.0 (2022)       -> Added GEE mask analysis capability
-- 3.1.1 (2023/03/20) -> Added ability to skip masks when segmenting Landsat or importing GEE mask
+- 1.0   (2018) 	 -> PyRIS deployment by Federico Monegaglia
+- 3.0.0 (2022)       -> Converted to python 3 by Riccardo Bonanomi
+- 3.1.0 (2022)       -> Added GEE mask analysis capability by Riccardo Bonanomi
+- 3.1.1 (2023/03/20) -> Added ability to skip masks when segmenting Landsat or importing GEE mask by Riccardo Bonanomi
 
 -------------
 ### Install Instructions
