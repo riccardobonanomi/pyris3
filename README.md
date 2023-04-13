@@ -15,6 +15,18 @@ PyRIS - Python RIvers by Satellite
 * Repo owner or admin: Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
 * Current repo: https://github.com/riccardobonanomi/pyris3
 
+### Updated to python 3 and added GEE capability ###
+Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
+
+### Repository branch description ###
+- the master branch contains the up-to-date working code
+- the original branch contains the original code converted to python 3
+
+## Version tracking
+- 1.0   (2018) 	 -> PyRIS deployment
+- 3.0.0 (2022)       -> Converted to python 3
+- 3.1.0 (2022)       -> Added GEE mask analysis capability
+- 3.1.1 (2023/03/20) -> Added ability to skip masks when segmenting Landsat or importing GEE mask
 
 ### Install Instructions ###
 
@@ -48,16 +60,3 @@ On Windows
 * Call pyris from the command line:
       pyris [args]
 * 'pyris --help' provides information on the required arguments
-
-### Updated to python 3 and added GEE capability ###
-Beta version by Riccardo Bonanomi (riccardo.bonanomi@unitn.it)
-
-### Repository branch description ###
-- the master branch contains the up-to-date working code
-- the original branch contains the original code converted to python 3
-
-## Version tracking
-- 1.0   (2018) 	 -> PyRIS deployment
-- 3.0.0 (2022)       -> Converted to python 3
-- 3.1.0 (2022)       -> Added GEE mask analysis capability
-- 3.1.1 (2023/03/20) -> Added ability to skip masks when segmenting Landsat or importing GEE mask
