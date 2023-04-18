@@ -43,10 +43,11 @@ long_description = '\n'.join((
 setup(
     name = 'pyris',
     version = '3.1.1',
-    author = 'Federico Monegaglia and Riccardo Bonanomi',
+    author = 'Federico Monegaglia',
     author_email = 'f.monegaglia@gmail.com',
     maintainer = 'Riccardo Bonanomi',
     maintainer_email = 'riccardo.bonanomi@unitn.it',
+    license = 'MIT License',
     description = description,
     long_description = long_description,
     url = 'https://github.com/riccardobonanomi/pyris3',
