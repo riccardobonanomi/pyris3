@@ -20,7 +20,7 @@ class ParserException( Exception ): pass
 # ============================
 # Parse Command Line Arguments
 # ============================
-parser = argparse.ArgumentParser( description='PyRIS v3.1.1 - 2023/03/20 :: Python - RIvers from Satellite' )
+parser = argparse.ArgumentParser( description='PyRIS v3.1.1 :: Python - RIvers from Satellite' )
 # Config Settings
 parser.add_argument( 'config', nargs='?', help='input configuration file' )
 parser.add_argument( '-i', '--init', action='store_true', help='initialize a config file with default settings' )
