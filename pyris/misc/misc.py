@@ -12,6 +12,7 @@ import numpy as np
 import matplotlib as mpl
 from matplotlib import pyplot as plt
 from matplotlib.gridspec import GridSpec
+from matplotlib.colors import ListedColormap
 from skimage.io import imread
 from skimage.morphology import closing, disk
 from osgeo import gdal
@@ -186,7 +187,12 @@ class interactive_mask( object ):
         Path to Landsat directory
         '''
         self.path = os.path.normpath( path )
-        self.name =  self.path.split( os.sep )[-1]
+        if os.path.isdir(self.path):
+            self.name = self.path.split( os.sep )[-1]
+            self.landsat = True
+        else:
+            self.name = self.path.split( os.sep )[-2]
+            self.landsat = False
 
     def build_real_color( self ):
         '''
@@ -204,12 +210,17 @@ class interactive_mask( object ):
         '''
         Interactively select areas through drag-and-drop
         '''
-        real_color = self.build_real_color()
         white_masks = []
         plt.ioff()
         fig = plt.figure()
         plt.title( 'Press-drag a rectangle for your mask. Close when you are finish.' )
-        plt.imshow( real_color, cmap='binary_r' )
+        if self.landsat:
+            real_color = self.build_real_color()
+            plt.imshow( real_color, cmap='binary_r' )
+        else:
+            gee_bw = imread (self.path)
+            cmap = ListedColormap(['black', 'white'])
+            plt.imshow(gee_bw, cmap = cmap)
         plt.axis('equal')
         x_press = None
         y_press = None
@@ -240,7 +251,10 @@ class interactive_mask( object ):
         return white_masks
 
     def get_georef( self ):
-        bands, GeoTransf = LoadLandsatData( self.path )
+        if self.landsat:
+            bands, GeoTransf = LoadLandsatData( self.path )
+        else:
+            bands, GeoTransf = LoadGeeMask( self.path )
         return GeoReference( GeoTransf )
 
     def _georeference_masks( self, masks, inverse=False ):

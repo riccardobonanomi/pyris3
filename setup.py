@@ -42,7 +42,7 @@ long_description = '\n'.join((
 
 setup(
     name = 'pyris',
-    version = '3.1.1',
+    version = '3.1.2',
     author = 'Federico Monegaglia',
     author_email = 'f.monegaglia@gmail.com',
     maintainer = 'Riccardo Bonanomi',
