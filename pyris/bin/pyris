@@ -28,13 +28,13 @@ parser.add_argument( '--select-black-mask', type=str, help='interactively draw b
 # Merge Landsat Folders
 parser.add_argument( '--merge', nargs='+', help='landsat folders to be merged together (requires gdal_merge)' )
 parser.add_argument( '--output', type=str, help='where merged landsat are to be stored' )
+# mask automatic choice label for segmetantion and gee masks
+parser.add_argument( '--label', type=str, help='if auto, pyris will try to label masks by itself. other options are max and all' )
 # Segmentation
 parser.add_argument( '-S', '--segmentation', action='store_true', help='perform segmentation of all the landsat folders' )
 # gee .tif mask import
 parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='import gee .tif masks obtained outside PyRIS to be cleaned' )
 parser.add_argument( '--gee-dir', type=str, help='dir in which to read ordered-by-name gee .tif mask' )
-# mask automatic choice label
-parser.add_argument( '--label', type=str, help='if auto, pyris will try to label masks by itself. other options are max and all' )
 # gee clean .tif mask import
 parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='import clean gee .tif masks obtained outside PyRIS' )
 parser.add_argument( '--gee-clean-dir', type=str, help='dir in which to read ordered-by-name gee clean .tif mask' )
