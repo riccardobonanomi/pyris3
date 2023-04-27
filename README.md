@@ -27,6 +27,9 @@ PyRIS - Python RIvers by Satellite
 - 3.1.2 (2023/04/19) by Riccardo Bonanomi   -> Added ability to draw black masks on gee mask
 
 -------------
+## Fast guide
+This is just a brief installation and usage guide, a more comprehensive documentation is under development.
+
 ### Install Instructions
 
 #### On Unix/Linux
