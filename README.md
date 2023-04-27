@@ -6,7 +6,7 @@ PyRIS - Python RIvers by Satellite
 
 * Contains: pyris (module), pyris (cli script)
 * Version 3.1.2 (development)
-* updated 2023/04/19
+* updated 2023/04/27
 
 ### Who do I talk to?
 
