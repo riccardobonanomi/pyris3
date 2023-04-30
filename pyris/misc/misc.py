@@ -21,14 +21,7 @@ import warnings
 
 # Matplotlib Setting
 mpl.rc( 'font', size=20 )
-mpl.rcParams['text.latex.preamble'] = [
-    r'\usepackage{siunitx}',
-    r'\siteup{detect-all}',
-    r'\usepackage{helvet}',
-    r'\usepackage{sansmath}',
-    r'\usepackage{amsmath}',
-    r'\sansmath'
-]
+mpl.rcParams['text.latex.preamble'] = r"\usepackage{siunitx} \siteup{detect-all} \usepackage{helvet} \usepackage{sansmath} \usepackage{amsmath} \sansmath"
 mpl.rcParams['axes.formatter.limits'] = [-3,3]
 plt.close( 'all' )
 
