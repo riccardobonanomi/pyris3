@@ -240,7 +240,7 @@ if args.axis:
 # --------------------------
 if args.migration:
     from pyris import migration_rates
-    pf = args.pfreq if hasattr( args, 'pfreq' ) else 10
+    pf = args.pfreq
     if args.axis_files is None and args.axis_dir is None and args.config is not None:
         if not os.path.isdir( migdir ): os.makedirs( migdir )
         title = 'Computing migration rates from centerlines in internal directory: %s' % cf.get( 'Data', 'output' )
