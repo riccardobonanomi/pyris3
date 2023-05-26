@@ -91,7 +91,7 @@ class AxisMigration( object ):
         return None
 
     def FilterCs( self, s, Cs, x, y, pfreq ):
-        '''Use PCS interpolation to filtetr out curvature signal'''
+        '''Use PCS interpolation to filter out curvature signal'''
         xp_PCS, yp_PCS, d1xp_PCS, d1yp_PCS, d2xp_PCS, d2yp_PCS = InterpPCS(
             x[::pfreq], y[::pfreq], N=x.size, s=x.size+np.sqrt(2*x.size),
             with_derivatives=True, k=2 )
