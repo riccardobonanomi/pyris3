@@ -28,7 +28,7 @@ PyRIS - Python RIvers by Satellite
 
 -------------
 ## Fast guide
-This is just a brief installation and usage guide, a more comprehensive documentation is under development.
+This is just a brief installation and usage guide, a more comprehensive documentation can be found in the **PyRISmanual.pdf** file at https://github.com/riccardobonanomi/pyris3/blob/main/PyRISmanual.pdf (note that it is still under development).
 
 ### Install Instructions
 
