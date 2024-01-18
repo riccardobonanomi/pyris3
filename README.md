@@ -43,19 +43,10 @@ This is just a brief installation and usage guide, a more comprehensive document
 3) Install dependencies for PyRIS:
      sudo pip install numpy scipy matplotlib scikit-image gdal
 
-4) Execute setup script to install PyRIS:
-     sudo python setup.py install
+4) To install PyRIS from the pyris folder run:
+     pip install .
 
-#### On Windows
-
-1) Install Anaconda (https://www.continuum.io/downloads)
-
-2) Add Python to your Path (https://docs.python.org/2/using/windows.html)
-
-3) Install GDAL 
-     - through Conda Prompt
-          conda install gdal
-     - (https://sandbox.oarc.ucla.edu/tutorials/installing-gdal-for-windows)
+#### On Windows - refer to the manual
 
 ### Run Instruction
 * Call pyris from the command line:
