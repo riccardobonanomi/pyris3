@@ -308,7 +308,10 @@ class AxisMigration( object ):
             if N1<=1 or N2<=1: continue
             if N2 > N1: # Remove Random Points from Second Bend in order to interpolate
                 idx = np.full( N2, True, bool )
-                idx[ np.random.choice( np.arange(2,N2-2), N2-N1, replace=False ) ] = False
+                if N1 <= 3: # N1 too small
+                    idx[ np.random.choice( np.arange(1,N2-1), N2-N1, replace=False ) ] = False
+                else:
+                    idx[ np.random.choice( np.arange(2,N2-2), N2-N1, replace=False ) ] = False
                 bx2 = bx2[ idx ]
                 by2 = by2[ idx ]
                 N2 = bx2.size

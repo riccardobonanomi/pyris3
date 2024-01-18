@@ -5,8 +5,8 @@ PyRIS - Python RIvers by Satellite
 ### Extract River Features from Landsat Multispectral Data
 
 * Contains: pyris (module), pyris (cli script)
-* Version 3.1.2 (development)
-* README updated 2023/07/11
+* Version 3.1.3 (development)
+* README updated 2024/01/18
 
 ### Who do I talk to?
 
@@ -25,6 +25,7 @@ PyRIS - Python RIvers by Satellite
 - 3.1.0 (2022)       by Riccardo Bonanomi   -> Added GEE mask analysis capability
 - 3.1.1 (2023/03/20) by Riccardo Bonanomi   -> Added ability to skip masks when segmenting Landsat or importing GEE mask
 - 3.1.2 (2023/04/19) by Riccardo Bonanomi   -> Added ability to draw black masks on gee mask
+- 3.1.3 (2024/01/18) by Riccardo Bonanomi   -> Fixed bug in migration evaluation
 
 -------------
 ## Fast guide
