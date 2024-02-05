@@ -26,6 +26,7 @@ PyRIS - Python RIvers by Satellite
 - 3.1.1 (2023/03/20) by Riccardo Bonanomi   -> Added ability to skip masks when segmenting Landsat or importing GEE mask
 - 3.1.2 (2023/04/19) by Riccardo Bonanomi   -> Added ability to draw black masks on gee mask
 - 3.1.3 (2024/01/18) by Riccardo Bonanomi   -> Fixed bug in migration evaluation
+- 3.1.4 (2024/02/05) by Riccardo Bonanomi   -> Added skipping capability of non .tif files in external masks
 
 -------------
 ## Fast guide

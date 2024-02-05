@@ -270,7 +270,8 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
     geemasks = sorted(os.listdir(geedir))
     for geemask in geemasks:
         # input
-        geename, __ = os.path.splitext(geemask)
+        geename, ext = os.path.splitext(geemask)
+        if ext != '.tif' and ext != '.tiff' and ext != '.TIF' and ext != '.TIFF': continue # skip non-tif files
         year = geename[-4 :]
         jday = str(213) # ficticious day for summer envelope
         name = '_'.join( ( year, jday ) )
@@ -396,7 +397,8 @@ def import_clean_gee_mask(config, geedir, geodir, maskdir ):
     geemasks = sorted(os.listdir(geedir))
     for geemask in geemasks:
         # input
-        geename, __ = os.path.splitext(geemask)
+        geename, ext = os.path.splitext(geemask)
+        if ext != '.tif' and ext != '.tiff' and ext != '.TIF' and ext != '.TIFF': continue # skip non-tif files
         year = geename[-12:-8]
         jday = str(213) # ficticious day for summer envelope
         name = '_'.join( ( year, jday ) )

@@ -3,9 +3,10 @@
 # Script: pyris
 # Package: PyRIS
 # Author: Federico Monegaglia
+# Mantainer: Riccardo Bonanomi
 # Date: April 2016
-# Version: 3.1.3
-# Last update: 18 January 2024
+# Version: 3.1.4
+# Last update: 05 February 2024
 # Description: Wrapper script for PyRIS package
 # =============================================
 
