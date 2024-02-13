@@ -12,6 +12,7 @@
 
 import os, sys
 import argparse
+import warnings
 
 import configparser as ConfigParser
 
@@ -21,7 +22,7 @@ class ParserException( Exception ): pass
 # ============================
 # Parse Command Line Arguments
 # ============================
-parser = argparse.ArgumentParser( description='PyRIS v3.1.4 :: Python - RIvers from Satellite' )
+parser = argparse.ArgumentParser( description='PyRIS v3.1.5 :: Python - RIvers from Satellite' )
 # Config Settings
 parser.add_argument( 'config', nargs='?', help='input configuration file' )
 parser.add_argument( '-i', '--init', action='store_true', help='initialize a config file with default settings' )
@@ -37,8 +38,8 @@ parser.add_argument( '-S', '--segmentation', action='store_true', help='perform 
 parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='import gee .tif masks obtained outside PyRIS to be cleaned' )
 parser.add_argument( '--gee-dir', type=str, help='dir in which to read ordered-by-name gee .tif mask' )
 # gee clean .tif mask import
-parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='import clean gee .tif masks obtained outside PyRIS' )
-parser.add_argument( '--gee-clean-dir', type=str, help='dir in which to read ordered-by-name gee clean .tif mask' )
+parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='deprecated, use the regular gee mask import with --label=all' )
+parser.add_argument( '--gee-clean-dir', type=str, help='deprecated, use the regular gee mask import with --label=all' )
 # manual cleaning of mask
 parser.add_argument( '--clean-mask', nargs='*', help='manually remove some branches' )
 # Skeletonization
@@ -144,13 +145,12 @@ if args.config is not None:
 # ------------------------
 if args.config is not None:
     geodir      = os.path.join( cf.get( 'Data', 'output' ), 'geotransf' )
-    geedir      = os.path.join( cf.get( 'Data', 'output' ), 'gee' )
-    geecleandir = os.path.join( cf.get( 'Data', 'output' ), 'geeclean' )
-    maskdir     = os.path.join( cf.get( 'Data', 'output' ), 'mask' )
-    skeldir     = os.path.join( cf.get( 'Data', 'output' ), 'skeleton' )
-    axisdir     = os.path.join( cf.get( 'Data', 'output' ), 'axis' )
+    geedir      = os.path.join( cf.get( 'Data', 'output' ), 'gee'       )
+    maskdir     = os.path.join( cf.get( 'Data', 'output' ), 'mask'      )
+    skeldir     = os.path.join( cf.get( 'Data', 'output' ), 'skeleton'  )
+    axisdir     = os.path.join( cf.get( 'Data', 'output' ), 'axis'      )
     migdir      = os.path.join( cf.get( 'Data', 'output' ), 'migration' )
-    bardir      = os.path.join( cf.get( 'Data', 'output' ), 'bars' )
+    bardir      = os.path.join( cf.get( 'Data', 'output' ), 'bars'      )
     if not args.gee_mask_import and not args.clean_gee_mask_import:
         landsat_dirs = sorted( [ os.path.join(cf.get('Data','input'), f) for f in os.listdir(cf.get('Data','input'))
                              if os.path.isdir( os.path.join(cf.get('Data','input'), f) ) ] )
@@ -185,21 +185,9 @@ if args.gee_mask_import:
         import_gee_mask( cf, geedir, geodir, maskdir, auto_label=args.label )
 
 # clean mask import
-if args.clean_gee_mask_import:
-    if not os.path.isdir( maskdir ): os.makedirs( maskdir )
-    if not os.path.isdir( geodir ): os.makedirs( geodir )
-    from pyris import import_clean_gee_mask
-    title = 'Importing clean mask obtained with gee outside PyRIS'
-    print; print(title); print('-'*len(title))
-    if args.gee_clean_dir is None:
-        title = 'Extracting river mask from clean gee .tif mask in internal directory: %s' % cf.get( 'Data', 'output' )
-        print; print(title); print('-'*len(title))
-        import_clean_gee_mask( cf, geecleandir, geodir, maskdir )
-    else:
-        title = 'Extracting river mask from clean gee .tif mask in external directory: %s' % args.gee_clean_dir
-        print; print(title); print('-'*len(title))
-        geecleandir =  args.gee_clean_dir
-        import_clean_gee_mask( cf, geecleandir, geodir, maskdir )
+if args.clean_gee_mask_import or args.gee_clean_dir is not None:
+    w = 'The gee clean mask import is deprecated, use the regular gee mask import instead. To achieve the same result use --label=all option.'
+    warnings.warn(DeprecationWarning(w))
 
 # Manually Clean Masks
 # --------------------
