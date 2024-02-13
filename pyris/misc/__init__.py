@@ -1,5 +1,5 @@
 __all__ = [
-        'Intersection','LoadLandsatData', 'LoadGeeMask', 
+        'Intersection','LoadLandsatData', 'LoadRawMask', 
         'Line2D', 'GeoReference', 'interactive_mask',
         'MaskClean', 'NaNs',
             ]

@@ -5,8 +5,8 @@
 # Author: Federico Monegaglia
 # Mantainer: Riccardo Bonanomi
 # Date: April 2016
-# Version: 3.1.4
-# Last update: 05 February 2024
+# Version: 3.2.0
+# Last update: 13 February 2024
 # Description: Wrapper script for PyRIS package
 # =============================================
 
@@ -22,7 +22,7 @@ class ParserException( Exception ): pass
 # ============================
 # Parse Command Line Arguments
 # ============================
-parser = argparse.ArgumentParser( description='PyRIS v3.1.5 :: Python - RIvers from Satellite' )
+parser = argparse.ArgumentParser( description='PyRIS v3.2.0 :: Python - RIvers from Satellite' )
 # Config Settings
 parser.add_argument( 'config', nargs='?', help='input configuration file' )
 parser.add_argument( '-i', '--init', action='store_true', help='initialize a config file with default settings' )
@@ -30,16 +30,19 @@ parser.add_argument( '--select-black-mask', type=str, help='interactively draw b
 # Merge Landsat Folders
 parser.add_argument( '--merge', nargs='+', help='landsat folders to be merged together (requires gdal_merge)' )
 parser.add_argument( '--output', type=str, help='where merged landsat are to be stored' )
-# mask automatic choice label for segmetantion and gee masks
+# mask automatic choice label for segmetantion and raw masks
 parser.add_argument( '--label', type=str, help='if auto, pyris will try to label masks by itself. other options are max and all' )
 # Segmentation
 parser.add_argument( '-S', '--segmentation', action='store_true', help='perform segmentation of all the landsat folders' )
-# gee .tif mask import
-parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='import gee .tif masks obtained outside PyRIS to be cleaned' )
-parser.add_argument( '--gee-dir', type=str, help='dir in which to read ordered-by-name gee .tif mask' )
-# gee clean .tif mask import
-parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='deprecated, use the regular gee mask import with --label=all' )
-parser.add_argument( '--gee-clean-dir', type=str, help='deprecated, use the regular gee mask import with --label=all' )
+# raw .tif mask import
+parser.add_argument( '-R', '--raw-mask-import', action='store_true', help='import raw .tif masks obtained outside PyRIS to be cleaned' )
+parser.add_argument( '--raw-dir', type=str, help='dir in which to read ordered-by-name raw .tif mask' )
+# to be deprecated gee .tif mask import  # TODO Deprecate this in version 2.1
+parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='will be deprecated in version 2.1, use the raw mask import' )
+parser.add_argument( '--gee-dir', type=str, help='will be deprecated in version 2.1, use the raw mask import' )
+# deprecated gee clean .tif mask import  # TODO Remove this in version 2.1
+parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='deprecated, use the regular raw mask import with --label=all' )
+parser.add_argument( '--gee-clean-dir', type=str, help='deprecated, use the regular raw mask import with --label=all' )
 # manual cleaning of mask
 parser.add_argument( '--clean-mask', nargs='*', help='manually remove some branches' )
 # Skeletonization
@@ -145,13 +148,13 @@ if args.config is not None:
 # ------------------------
 if args.config is not None:
     geodir      = os.path.join( cf.get( 'Data', 'output' ), 'geotransf' )
-    geedir      = os.path.join( cf.get( 'Data', 'output' ), 'gee'       )
+    rawdir      = os.path.join( cf.get( 'Data', 'output' ), 'raw'       )
     maskdir     = os.path.join( cf.get( 'Data', 'output' ), 'mask'      )
     skeldir     = os.path.join( cf.get( 'Data', 'output' ), 'skeleton'  )
     axisdir     = os.path.join( cf.get( 'Data', 'output' ), 'axis'      )
     migdir      = os.path.join( cf.get( 'Data', 'output' ), 'migration' )
     bardir      = os.path.join( cf.get( 'Data', 'output' ), 'bars'      )
-    if not args.gee_mask_import and not args.clean_gee_mask_import:
+    if not args.raw_mask_import and not args.gee_mask_import and not args.clean_gee_mask_import: # TODO Remove this in version 2.1
         landsat_dirs = sorted( [ os.path.join(cf.get('Data','input'), f) for f in os.listdir(cf.get('Data','input'))
                              if os.path.isdir( os.path.join(cf.get('Data','input'), f) ) ] )
 
@@ -165,26 +168,38 @@ if args.segmentation:
     print; print(title); print('-'*len(title))
     segment_all( landsat_dirs, geodir, cf, maskdir, auto_label=args.label )
 
-# Import .tif mask from gee
+# Import raw .tif mask
 # --------------------
-# to be cleaned mask import
-if args.gee_mask_import:
+if args.gee_mask_import:  # TODO Deprecate this in version 2.1
+    w = 'The gee mask import will be deprecated in version 2.1, use the raw mask import -R.'
+    warnings.warn(FutureWarning(w))
+    args.raw_mask_import = True
+    gee_dir = os.path.join( cf.get( 'Data', 'output' ), 'gee/' )
+    if os.path.isdir( gee_dir ):
+        args.gee_dir = gee_dir
+
+if args.gee_dir is not None:  # TODO Deprecate this in version 2.1
+    w = 'The gee mask import will be deprecated in version 2.1, use the raw mask import --raw-dir.'
+    warnings.warn(FutureWarning(w))
+    args.raw_dir = args.gee_dir
+
+if args.raw_mask_import:
     if not os.path.isdir( maskdir ): os.makedirs( maskdir )
     if not os.path.isdir( geodir ): os.makedirs( geodir )
-    from pyris import import_gee_mask
-    title = 'Importing to be cleaned mask obtained with gee outside PyRIS'
+    from pyris import import_raw_mask
+    title = 'Importing raw mask obtained outside PyRIS'
     print; print(title); print('-'*len(title))
-    if args.gee_dir is None:
-        title = 'Extracting river mask from gee .tif mask in internal directory: %s' % cf.get( 'Data', 'output' )
+    if args.raw_dir is None:
+        title = 'Extracting river mask from raw .tif mask in internal directory: %s' % cf.get( 'Data', 'output' )
         print; print(title); print('-'*len(title))
-        import_gee_mask( cf, geedir, geodir, maskdir, auto_label=args.label )
+        import_raw_mask( cf, rawdir, geodir, maskdir, auto_label=args.label )
     else:
-        title = 'Extracting river mask from gee .tif mask in external directory: %s' % args.gee_dir
+        title = 'Extracting river mask from raw .tif mask in external directory: %s' % args.raw_dir
         print; print(title); print('-'*len(title))
-        geedir = args.gee_dir
-        import_gee_mask( cf, geedir, geodir, maskdir, auto_label=args.label )
+        rawdir = args.raw_dir
+        import_raw_mask( cf, rawdir, geodir, maskdir, auto_label=args.label )
 
-# clean mask import
+# old clean mask import  # TODO Remove this in version 2.1
 if args.clean_gee_mask_import or args.gee_clean_dir is not None:
     w = 'The gee clean mask import is deprecated, use the regular gee mask import instead. To achieve the same result use --label=all option.'
     warnings.warn(DeprecationWarning(w))

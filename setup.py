@@ -35,14 +35,14 @@ long_description = '\n'.join((
 
     Requires: NumPy, SciPy, MatPlotLib, Scikits-Image, GDAL, imagecodecs
     
-    Updated to python3 and with a first gee introduction by Riccardo Bonanomi
+    Updated to python3 and with a first external mask introduction by Riccardo Bonanomi
 
     '''
 ))
 
 setup(
     name = 'pyris',
-    version = '3.1.5',
+    version = '3.2.0',
     author = 'Federico Monegaglia',
     author_email = 'f.monegaglia@gmail.com',
     maintainer = 'Riccardo Bonanomi',

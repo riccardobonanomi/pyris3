@@ -87,9 +87,9 @@ def LoadLandsatData( dirname ):
         }
     return bands, GeoTransf
 
-def LoadGeeMask( maskfile ):
+def LoadRawMask( maskfile ):
     '''
-    Load gee .tif mask for the current gee data
+    Load raw .tif mask for the current raw mask data
     '''
     mask = imread( maskfile )
 
@@ -211,9 +211,9 @@ class interactive_mask( object ):
             real_color = self.build_real_color()
             plt.imshow( real_color, cmap='binary_r' )
         else:
-            gee_bw = imread (self.path)
+            raw_bw = imread (self.path)
             cmap = ListedColormap(['black', 'white'])
-            plt.imshow(gee_bw, cmap = cmap)
+            plt.imshow(raw_bw, cmap = cmap)
         plt.axis('equal')
         x_press = None
         y_press = None
@@ -247,7 +247,7 @@ class interactive_mask( object ):
         if self.landsat:
             bands, GeoTransf = LoadLandsatData( self.path )
         else:
-            bands, GeoTransf = LoadGeeMask( self.path )
+            bands, GeoTransf = LoadRawMask( self.path )
         return GeoReference( GeoTransf )
 
     def _georeference_masks( self, masks, inverse=False ):

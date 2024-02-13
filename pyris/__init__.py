@@ -46,7 +46,7 @@ __all__ = [
     # config
     'default_config', 'create_cfg_file', 'get_cfg', 'set_cfg',
     # misc
-    'Intersection','LoadLandsatData', 'LoadGeeMask', 
+    'Intersection','LoadLandsatData', 'LoadRawMask', 
     'Line2D', 'GeoReference', 'interactive_mask',
     'MaskClean', 'NaNs',
     # raster
@@ -248,17 +248,17 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
     return None
 
 
-def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
+def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
     '''
-    import_gee_mask(geedir, geodir, maskdir )
+    import_raw_mask(rawdir, geodir, maskdir )
     ===========================================
 
-    Import .tif masks generated with gee outside PyRIS and cleans it
+    Import .tif masks generated with raw outside PyRIS and cleans it
      
     Arguments
     ---------
     config            PyRIS' RawConfigParser instance
-    geedir            directory containing all the .tif mask files
+    rawdir            directory containing all the .tif mask files
     geodir            directory where GeoTransf instances are stored (default None)
     maskdir           directory containing all the mask files
     auto_label        mask selection method if more than one object occur (default None)
@@ -266,13 +266,13 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
     
     '''
     to_skip = []
-    # Iterate over gee directory
-    geemasks = sorted(os.listdir(geedir))
-    for geemask in geemasks:
+    # Iterate over raw mask directory
+    rawmasks = sorted(os.listdir(rawdir))
+    for rawmask in rawmasks:
         # input
-        geename, ext = os.path.splitext(geemask)
+        rawname, ext = os.path.splitext(rawmask)
         if ext != '.tif' and ext != '.tiff' and ext != '.TIF' and ext != '.TIFF': continue # skip non-tif files
-        year = geename[-4 :]
+        year = rawname[-4 :]
         jday = str(213) # ficticious day for summer envelope
         name = '_'.join( ( year, jday ) )
         # output
@@ -282,15 +282,15 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
         # skip the files which have already been processes
         if all( map( os.path.isfile, [ maskfile, geofile ] ) ):
             print
-            print('data found for file %s - skipping '  % ( geename ))
+            print('data found for file %s - skipping '  % ( rawname ))
             to_skip.append( name )
             continue
 
         print
-        print('Loading %s' % ( geename ))
+        print('Loading %s' % ( rawname ))
 
-        # Loading geemask and georeferencing data
-        mask, GeoTransf = LoadGeeMask( os.path.join( geedir, geemask ) )
+        # Loading rawmask and georeferencing data
+        mask, GeoTransf = LoadRawMask( os.path.join( rawdir, rawmask ) )
 
         print('applying BW masks...')
 
@@ -345,7 +345,7 @@ def import_gee_mask(config, geedir, geodir, maskdir, auto_label ):
             for lab in labs: labssum += int(lab)
             if labssum<0:
                 to_skip.append( name )
-                print('no feature chosen for file %s - skipping ' % ( geename ))
+                print('no feature chosen for file %s - skipping ' % ( rawname ))
                 continue
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
