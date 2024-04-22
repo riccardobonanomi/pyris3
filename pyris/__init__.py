@@ -387,7 +387,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
     maskdir           directory containing all the mask files
     geodir            directory where GeoTransf instances are stored (default None)
     config            PyRIS' RawConfigParser instance (default None)
-    file_only         run on a single file only (default None)
+    file_only         run on a single file only (default False)
 
     Returns
     -------
@@ -397,7 +397,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
     if not file_only:
         maskfiles = sorted( [ os.path.join(maskdir, f) for f in os.listdir(maskdir) ] )
         if geodir is not None: geofiles = sorted( [ os.path.join(geodir, f) for f in os.listdir(geodir) ] )
-        else: gofiles = [ None for i in range( len(maskfiles) ) ]
+        else: geofiles = [ None for i in range( len(maskfiles) ) ]
     else:
         maskfiles = [ maskdir ]
         if geodir is not None:
