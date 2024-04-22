@@ -66,6 +66,8 @@ from .vector import *
 from .misc import *
 from .config import *
 
+small_object_dim = 50 # Minimum Size of Objects multiplied by the squared channel width
+
 def load( fname, *args, **kwargs ):
     '''Load file depending on the extension'''
     ext = os.path.splitext( fname )[-1]
@@ -188,11 +190,11 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
 
         # Image Cleaning
         print('cleaning mask...')
-        mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # One Hundred Widths of Channel at Least is Required
+        mask = RemoveSmallObjects( mask, small_object_dim*pixel_width**2 ) # One Hundred Widths of Channel at Least is Required
         radius = max( np.floor( 0.5 * ( pixel_width ) ) - 3, 0 )
         mask = mm.binary_opening( mask, mm.disk( radius ) ) # Break Small Connectins
         mask = CleanIslands( mask, 10*pixel_width**2 ) # Clean Holes Inside the Planform
-        mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # Remove New Small Objects
+        mask = RemoveSmallObjects( mask, small_object_dim*pixel_width**2 ) # Remove New Small Objects
         mask = mask.astype( int )
 
         # Label Masks - we need to perform a rotation in order to have labels going from the largest to the smallest
@@ -307,7 +309,6 @@ def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
 
         # Set Dimensions
         pixel_width = config.getfloat('Data', 'channel_width') / GeoTransf['PixelSize'] # Channel width in Pixels
-        radius = 2 * pixel_width # Circle Radius for Local Thresholding
         
         # Mask Landsat NoData
         nanmask = np.where( mask==0, 1, 0 )
@@ -315,11 +316,11 @@ def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
 
         # Image Cleaning
         print('cleaning mask...')
-        mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # One Hundred Widths of Channel at Least is Required
+        mask = RemoveSmallObjects( mask, small_object_dim*pixel_width**2 ) # One Hundred Widths of Channel at Least is Required
         radius = max( np.floor( 0.5 * ( pixel_width ) ) - 3, 0 )
         mask = mm.binary_opening( mask, mm.disk( radius ) ) # Break Small Connectins
         mask = CleanIslands( mask, 10*pixel_width**2 ) # Clean Holes Inside the Planform
-        mask = RemoveSmallObjects( mask, 100*pixel_width**2 ) # Remove New Small Objects
+        mask = RemoveSmallObjects( mask, small_object_dim*pixel_width**2 ) # Remove New Small Objects
         mask = mask.astype( int )
 
         # Label Masks - we need to perform a rotation in order to have labels going from the largest to the smallest
@@ -425,7 +426,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
             pixel_width = int(config.get('Data', 'channel_width')) / GeoTransf[ 'PixelSize' ]
         else:
             pixel_width = 3
-        bw = RemoveSmallObjects( bw, 100*pixel_width**2 ) # Remove New Small Objects
+        bw = RemoveSmallObjects( bw, small_object_dim*pixel_width**2 ) # Remove New Small Objects
 
         ans = None
         while ans not in ['y', 'n']: ans = input('overwrite mask file?[y/n] ')
