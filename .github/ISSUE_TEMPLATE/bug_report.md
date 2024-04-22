@@ -25,8 +25,8 @@ If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
  - OS: [e.g. iOS]
- - Python version [e.g. 3.10.11]
- - PyRIS version [e.g. 2.0.0]
+ - Python version: [e.g. 3.10.11]
+ - PyRIS version: [e.g. 3.2.0]
 
 **Additional context**
 Add any other context about the problem here.
