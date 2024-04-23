@@ -1,5 +1,6 @@
 __name__ = 'PyRIS'
 __version__ = '3.2.1'
+__year__ = '2024'
 __fullname__ = 'Python - RIvers by Satellites'
 __url__ = 'https://github.com/riccardobonanomi/pyris3'
 __author__ = 'Federico Monegaglia'
