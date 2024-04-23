@@ -1,0 +1,7 @@
+setuptools>=69.5.1
+numpy>=1.25.2
+scipy>=1.11.2
+matplotlib>=3.7.2
+scikit-image>=0.21.0
+gdal>=3.7.0
+imagecodecs>=2023.8.12
