@@ -8,6 +8,7 @@
 
 from __future__ import division
 import os
+import time
 import numpy as np
 import matplotlib as mpl
 from matplotlib import pyplot as plt
@@ -327,3 +328,27 @@ class MaskClean( object ):
         plt.show()
         return self.bw, self.press
 
+
+class ToC( object ):
+    '''
+    Compute and print the computation time
+    '''
+    def __init__(self, message = 'Computation'):
+        self.start = time.time()
+        self.message = message
+        return None
+
+    def print_elapsed_time(self):
+        self.end = time.time()
+        # convert time in seconds to hours, minutes and seconds
+        hours, rem = divmod(self.end - self.start, 3600)
+        minutes, seconds = divmod(rem, 60)
+        if hours == 0:
+            if minutes == 0:
+                end_message = '%.2f seconds' % seconds
+            else:
+                end_message = '%d minutes and %04.2f seconds' % (minutes, seconds)
+        else:
+            end_message = '%d hours, %02d minutes and %04.2f seconds' % (hours, minutes, seconds)
+        print(self.message + ' ended in ' + end_message)
+        return None

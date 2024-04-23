@@ -44,7 +44,7 @@ __all__ = [
     # misc
     'Intersection','LoadLandsatData', 'LoadRawMask', 
     'Line2D', 'GeoReference', 'interactive_mask',
-    'MaskClean', 'NaNs',
+    'MaskClean', 'NaNs', 'ToC',
     # raster
     'CleanIslands', 'RemoveSmallObjects', 'Skeletonize',
     'Pruner', 'Pruning',

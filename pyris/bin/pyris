@@ -11,14 +11,17 @@
 # =============================================
 
 import os, sys
+import time
 import argparse
 import warnings
 from pyris.info import __name__, __fullname__, __version__
+from pyris.misc import ToC
 
 import configparser as ConfigParser
 
 class ParserException( Exception ): pass
 
+toc = ToC() # starting computation time
 
 # ============================
 # Parse Command Line Arguments
@@ -283,3 +286,5 @@ if args.bars:
     from pyris import bars_detection
     title = 'Decesting bars from centerlines in internal directory: %s' % cf.get( 'Data', 'output' )
     bars_detection( landsat_dirs, geodir, axisdir, migdir, bardir, show=args.show )
+
+toc.print_elapsed_time() # print elapsed time
