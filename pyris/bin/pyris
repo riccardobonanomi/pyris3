@@ -37,12 +37,9 @@ parser.add_argument( '-S', '--segmentation', action='store_true', help='perform 
 # raw .tif mask import
 parser.add_argument( '-R', '--raw-mask-import', action='store_true', help='import raw .tif masks obtained outside PyRIS to be cleaned' )
 parser.add_argument( '--raw-dir', type=str, help='dir in which to read ordered-by-name raw .tif mask' )
-# to be deprecated gee .tif mask import  # TODO Deprecate this in version 2.1
+# to be removed gee .tif mask import  # TODO Remove this in version 2.2
 parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='will be deprecated in version 2.1, use the raw mask import' )
 parser.add_argument( '--gee-dir', type=str, help='will be deprecated in version 2.1, use the raw mask import' )
-# deprecated gee clean .tif mask import  # TODO Remove this in version 2.1
-parser.add_argument( '-C', '--clean-gee-mask-import', action='store_true', help='deprecated, use the regular raw mask import with --label=all' )
-parser.add_argument( '--gee-clean-dir', type=str, help='deprecated, use the regular raw mask import with --label=all' )
 # manual cleaning of mask
 parser.add_argument( '--clean-mask', nargs='*', help='manually remove some branches' )
 # Skeletonization
@@ -154,7 +151,7 @@ if args.config is not None:
     axisdir     = os.path.join( cf.get( 'Data', 'output' ), 'axis'      )
     migdir      = os.path.join( cf.get( 'Data', 'output' ), 'migration' )
     bardir      = os.path.join( cf.get( 'Data', 'output' ), 'bars'      )
-    if not args.raw_mask_import and not args.gee_mask_import and not args.clean_gee_mask_import: # TODO Remove this in version 2.1
+    if not args.raw_mask_import:
         landsat_dirs = sorted( [ os.path.join(cf.get('Data','input'), f) for f in os.listdir(cf.get('Data','input'))
                              if os.path.isdir( os.path.join(cf.get('Data','input'), f) ) ] )
 
@@ -170,18 +167,9 @@ if args.segmentation:
 
 # Import raw .tif mask
 # --------------------
-if args.gee_mask_import:  # TODO Deprecate this in version 2.1
-    w = 'The gee mask import will be deprecated in version 2.1, use the raw mask import -R.'
-    warnings.warn(FutureWarning(w))
-    args.raw_mask_import = True
-    gee_dir = os.path.join( cf.get( 'Data', 'output' ), 'gee/' )
-    if os.path.isdir( gee_dir ):
-        args.gee_dir = gee_dir
-
-if args.gee_dir is not None:  # TODO Deprecate this in version 2.1
-    w = 'The gee mask import will be deprecated in version 2.1, use the raw mask import --raw-dir.'
-    warnings.warn(FutureWarning(w))
-    args.raw_dir = args.gee_dir
+if args.gee_mask_import or args.gee_dir is not None:  # TODO Remove this in version 2.2
+    w = 'The gee mask import is deprecated, use the raw mask import -R and the raw mask dir --raw-dir.'
+    warnings.warn(DeprecationWarning(w))
 
 if args.raw_mask_import:
     if not os.path.isdir( maskdir ): os.makedirs( maskdir )
@@ -198,11 +186,6 @@ if args.raw_mask_import:
         print; print(title); print('-'*len(title))
         rawdir = args.raw_dir
         import_raw_mask( cf, rawdir, geodir, maskdir, auto_label=args.label )
-
-# old clean mask import  # TODO Remove this in version 2.1
-if args.clean_gee_mask_import or args.gee_clean_dir is not None:
-    w = 'The gee clean mask import is deprecated, use the regular gee mask import instead. To achieve the same result use --label=all option.'
-    warnings.warn(DeprecationWarning(w))
 
 # Manually Clean Masks
 # --------------------
