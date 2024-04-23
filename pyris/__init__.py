@@ -58,7 +58,7 @@ __all__ = [
 # Import Everything from SubModules
 from .raster import *
 from .vector import *
-from .misc import *
+from .misc   import *
 from .config import *
 
 small_object_dim = 50 # Minimum Size of Objects multiplied by the squared channel width
@@ -220,8 +220,8 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
         else:
-            # The largest element in the image will be used.
-            warnings.warn( 'automated labels may lead to erroneous planforms! please check your results!' )
+            w = 'automated labels may lead to erroneous planforms! please check your results!'
+            warnings.warn( w, Warning )
             if auto_label == 'auto':
                 if config.get( 'Segmentation', 'thresholding' ) == 'local': auto_label = 'max'
                 elif config.get( 'Segmentation', 'thresholding' ) == 'global': auto_label = 'all'
@@ -346,8 +346,8 @@ def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
         else:
-            # The largest element in the image will be used.
-            warnings.warn( 'automated labels may lead to erroneous planforms! please check your results!' )
+            w = 'automated labels may lead to erroneous planforms! please check your results!'
+            warnings.warn( w, Warning )
             if auto_label == 'auto':
                 if config.get( 'Segmentation', 'thresholding' ) == 'local': auto_label = 'max'
                 elif config.get( 'Segmentation', 'thresholding' ) == 'global': auto_label = 'all'

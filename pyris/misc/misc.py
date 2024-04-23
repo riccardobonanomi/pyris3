@@ -192,7 +192,8 @@ class interactive_mask( object ):
         Create an RGB  False Color composite
         '''
         if any( [self.name.startswith( s ) for s in ['LC8', 'LC08', 'LC9', 'LC09']] ):
-            warnings.warn( 'Landsat 8 and 9 may return distorted images as real color.', Warning )
+            w = 'Landsat 8 and 9 may return distorted images as real color.'
+            warnings.warn( w, Warning )
             b1, b2, b3 = 'B6', 'B5', 'B4'
         else:
             b1, b2, b3 = 'B5', 'B4', 'B3'

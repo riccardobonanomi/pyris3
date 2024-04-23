@@ -174,7 +174,7 @@ if args.segmentation:
 # --------------------
 if args.gee_mask_import or args.gee_dir is not None:  # TODO Remove this in version 2.2
     w = 'The gee mask import is deprecated, use the raw mask import -R and the raw mask dir --raw-dir.'
-    warnings.warn(DeprecationWarning(w))
+    warnings.warn( w, DeprecationWarning )
 
 if args.raw_mask_import:
     if not os.path.isdir( maskdir ): os.makedirs( maskdir )
