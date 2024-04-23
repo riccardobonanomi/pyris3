@@ -31,11 +31,6 @@ import datetime
 # Suppress Warnings
 warnings.filterwarnings("ignore")
 
-__author__ = 'Federico Monegaglia and Riccardo Bonanomi'
-__email__ = 'riccardo.bonanomi@unitn.it'
-__version__ = '3.0'
-__year__ = '2023'
-
 __all__ = [
     # modules
     'config', 'raster', 'vector', 'misc'
