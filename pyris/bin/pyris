@@ -5,14 +5,15 @@
 # Author: Federico Monegaglia
 # Mantainer: Riccardo Bonanomi
 # Date: April 2016
-# Version: 3.2.0
-# Last update: 13 February 2024
+# Version: 3.2.1
+# Last update: 23 April 2024
 # Description: Wrapper script for PyRIS package
 # =============================================
 
 import os, sys
 import argparse
 import warnings
+from pyris.info import __name__, __fullname__, __version__
 
 import configparser as ConfigParser
 
@@ -22,7 +23,9 @@ class ParserException( Exception ): pass
 # ============================
 # Parse Command Line Arguments
 # ============================
-parser = argparse.ArgumentParser( description='PyRIS v3.2.0 :: Python - RIvers from Satellite' )
+parser = argparse.ArgumentParser( description='%s v%s :: %s' % (__name__, __version__, __fullname__) )
+# Version
+parser.add_argument( '-v', '--version', action='version', version='%s v%s' % (__name__, __version__) )
 # Config Settings
 parser.add_argument( 'config', nargs='?', help='input configuration file' )
 parser.add_argument( '-i', '--init', action='store_true', help='initialize a config file with default settings' )

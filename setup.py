@@ -10,6 +10,7 @@
 
 from distutils.core import setup
 import platform
+from pyris.info import __name__, __fullname__, __version__, __url__, __author__, __author_email__, __maintainer__, __maintainer_email__, __license__, __long_description__
 
 pyris_script = 'pyris/bin/pyris'
 
@@ -20,37 +21,20 @@ if platform.system() == 'Windows':
     shutil.copyfile(pyris_script, pyris_win_script)
     pyris_script = pyris_win_script
 
-description = 'PyRIS :: Python - RIvers by Satellites'
-long_description = '\n'.join((
-    description,
-    '''
-
-    See Publication:
-    
-    --------------------------------------------------------------------------------------------------------
-    Monegaglia et al., 2018
-    "Automated extraction of meandering river morphodynamics from multitemporal remotely sensed data",
-    Environmental Modeling & Software [https://www.sciencedirect.com/science/article/pii/S1364815217309118]
-    --------------------------------------------------------------------------------------------------------
-
-    Requires: NumPy, SciPy, MatPlotLib, Scikits-Image, GDAL, imagecodecs
-    
-    Updated to python3 and with a first external mask introduction by Riccardo Bonanomi
-
-    '''
-))
+description = ('%s v%s :: %s' % (__name__, __version__, __fullname__))
+long_description = __long_description__
 
 setup(
-    name = 'pyris',
-    version = '3.2.0',
-    author = 'Federico Monegaglia',
-    author_email = 'f.monegaglia@gmail.com',
-    maintainer = 'Riccardo Bonanomi',
-    maintainer_email = 'riccardo.bonanomi@unitn.it',
-    license = 'MIT License',
+    name = __name__,
+    version = __version__,
+    author = __author__,
+    author_email = __author_email__,
+    maintainer = __maintainer__,
+    maintainer_email = __maintainer_email__,
+    license = __license__,
     description = description,
     long_description = long_description,
-    url = 'https://github.com/riccardobonanomi/pyris3',
+    url = __url__,
     install_requires = [ 'numpy', 'scipy', 'matplotlib', 'scikit-image', 'gdal', 'imagecodecs' ],
     packages = [ 'pyris', 'pyris.config', 'pyris.misc', 'pyris.raster', 'pyris.vector' ],
     scripts = [pyris_script],
