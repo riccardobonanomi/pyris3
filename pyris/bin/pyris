@@ -82,9 +82,11 @@ else:
                     print('%s = %s' % ( option, cf.get( section, option ) ))
     elif args.merge is not None:
         pass
+    elif args.clean_mask is not None:
+        pass
     else:
         if args.axis_files is None and args.axis_dir is None:
-            e = 'Too few arguments. Either <config> or <axis files> must be given\n'
+            e = 'Too few arguments. Either <config> or <axis files> or <merge> or <clean mask files> must be given\n'
             parser.print_help()
             raise ParserException(e)
 
@@ -194,17 +196,37 @@ if args.raw_mask_import:
 # --------------------
 if args.clean_mask is not None:
     from pyris import clean_masks
-    if len( args.clean_mask ) == 0:
-        title = 'Manual cleaning of channel masks'
+    if args.config is not None:
+        title = 'Manual cleaning of channel masks in internal directory'
         print; print(title); print('-'*len(title))
-        if args.config is not None: clean_masks( maskdir, geodir=geodir, config=cf, file_only=False )
-        else: clean_masks( maskdir )
+        if len( args.clean_mask ) == 0:
+            clean_masks( maskdir, geodir=geodir, config=cf, file_only=False )
+        else:
+            for f in args.clean_mask:
+                path, file = os.path.split( f )
+                if path == '':
+                    mask = os.path.join( maskdir, f )
+                else:
+                    mask = f
+                clean_masks( mask, geodir=geodir, config=cf, file_only=True )
     else:
-        for f in args.clean_mask:
-            title = 'Manual cleaning of mask files'
-            print; print(title); print('-'*len(title))
-            if args.config is not None: clean_masks( f, geodir=geodir, config=cf, file_only=True )
-            else: clean_masks( maskdir )
+        title = 'Manual cleaning of external channel masks. The small object removal will use a 3 pixels river width.'
+        print; print(title); print('-'*len(title))
+        if len( args.clean_mask ) == 1:
+            path, file = os.path.split( args.clean_mask[0] )
+            if file == '': 
+                maskdir = path
+                clean_masks( maskdir, file_only=False )
+            else:
+                mask = args.clean_mask[0]
+                clean_masks( mask, file_only=True)
+        elif len( args.clean_mask ) > 1:
+            for mask in args.clean_mask:
+                clean_masks( mask, file_only=True )
+        else:
+            e = 'Missing config file if no mask directory or files are provided\n'
+            parser.print_help()
+            raise ParserException(e)
 
 # Skeletonization
 # ---------------
