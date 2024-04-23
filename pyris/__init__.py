@@ -30,6 +30,7 @@ import datetime
 
 # Suppress Warnings
 warnings.filterwarnings("ignore")
+warnings.simplefilter(action='once', category=UserWarning)
 
 __all__ = [
     # modules
@@ -221,7 +222,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
         else:
             w = 'automated labels may lead to erroneous planforms! please check your results!'
-            warnings.warn( w, Warning )
+            warnings.warn( w, UserWarning )
             if auto_label == 'auto':
                 if config.get( 'Segmentation', 'thresholding' ) == 'local': auto_label = 'max'
                 elif config.get( 'Segmentation', 'thresholding' ) == 'global': auto_label = 'all'
@@ -347,7 +348,7 @@ def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
         else:
             w = 'automated labels may lead to erroneous planforms! please check your results!'
-            warnings.warn( w, Warning )
+            warnings.warn( w, UserWarning )
             if auto_label == 'auto':
                 if config.get( 'Segmentation', 'thresholding' ) == 'local': auto_label = 'max'
                 elif config.get( 'Segmentation', 'thresholding' ) == 'global': auto_label = 'all'
