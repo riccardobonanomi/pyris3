@@ -8,10 +8,7 @@
 
 # Python - RIvers from Satellites
 
-try:
-    from setuptools import setup
-except ImportError:
-    from distutils.core import setup
+from setuptools import setup
 import platform
 from pyris.info import __name__, __fullname__, __version__, __url__, __author__, __author_email__
 from pyris.info import __maintainer__, __maintainer_email__, __license__, __long_description__
