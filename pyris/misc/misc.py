@@ -286,6 +286,7 @@ class MaskClean( object ):
     def __init__( self, bw, bg=None ):
         self.bw = bw.astype( int )
         self.bg = np.zeros(bw.shape) if bg is None else bg
+        self.press = False
         
     def __call__( self ):
         #real_color = self.build_real_color()
@@ -315,6 +316,7 @@ class MaskClean( object ):
                 print( "Slice [{0}:{1},{2}:{3}] will be set to {4}".format(
                     xs, xe, ys, ye, 0) )
                 self.bw[ ys:ye,xs:xe ] = 0
+                self.press = True
                 plt.fill( [xs,xe,xe,xs,xs], [ys,ys,ye,ye,ys], 'r', alpha=0.25 )
                 event.canvas.draw()
             x_press = None
@@ -322,5 +324,5 @@ class MaskClean( object ):
         cid_press   = fig.canvas.mpl_connect('button_press_event'  , onpress  )
         cid_release = fig.canvas.mpl_connect('button_release_event', onrelease)
         plt.show()
-        return self.bw
+        return self.bw, self.press
 

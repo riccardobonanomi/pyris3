@@ -421,18 +421,21 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
         GeoTransf = pickle.load( open(geofile, 'rb') ) if geofile is not None else None
         mask = np.load( maskfile )
         bw = np.where( mask>0, 1, 0 )
-        bw = MaskClean( bw, bg )()
-        if GeoTransf is not None and config is not None:
-            pixel_width = int(config.get('Data', 'channel_width')) / GeoTransf[ 'PixelSize' ]
-        else:
-            pixel_width = 3
-        bw = RemoveSmallObjects( bw, small_object_dim*pixel_width**2 ) # Remove New Small Objects
+        bw, press = MaskClean( bw, bg )()
+        if press:
+            if GeoTransf is not None and config is not None:
+                pixel_width = int(config.get('Data', 'channel_width')) / GeoTransf[ 'PixelSize' ]
+            else:
+                pixel_width = 3
+            bw = RemoveSmallObjects( bw, small_object_dim*pixel_width**2 ) # Remove New Small Objects
 
-        ans = None
-        while ans not in ['y', 'n']: ans = input('overwrite mask file?[y/n] ')
-        if ans == 'y':
-            print('saving mask file')
-            np.save( maskfile, mask*bw )
+            ans = None
+            while ans not in ['y', 'n']: ans = input('overwrite mask file?[y/n] ')
+            if ans == 'y':
+                print('saving mask file')
+                np.save( maskfile, mask*bw )
+            else:
+                print('skipping')
         else:
             print('skipping')
     return None
