@@ -47,7 +47,8 @@ parser.add_argument( '--raw-dir', type=str, help='dir in which to read ordered-b
 parser.add_argument( '-G', '--gee-mask-import', action='store_true', help='is deprecated from version 3.2.1, use the raw mask import' )
 parser.add_argument( '--gee-dir', type=str, help='is deprecated from version 3.2.1, use the raw mask import' )
 # manual cleaning of mask
-parser.add_argument( '--clean-mask', nargs='*', help='manually remove some branches' )
+parser.add_argument( '--clean-mask', nargs='*', help='manually clean some branches' )
+parser.add_argument( '--clean-label', default='single', type=str, help='if all it will apply the cleaning to all the subsequent ones too' )
 # Skeletonization
 parser.add_argument( '-K', '--skeletonization', action='store_true', help='skeletonize masks' )
 # Axis Extraction
@@ -198,38 +199,61 @@ if args.raw_mask_import:
 # Manually Clean Masks
 # --------------------
 if args.clean_mask is not None:
-    from pyris import clean_masks
-    if args.config is not None:
-        title = 'Manual cleaning of channel masks in internal directory'
-        print; print(title); print('-'*len(title))
-        if len( args.clean_mask ) == 0:
-            clean_masks( maskdir, geodir=geodir, config=cf, file_only=False )
-        else:
-            for f in args.clean_mask:
-                path, file = os.path.split( f )
-                if path == '':
-                    mask = os.path.join( maskdir, f )
-                else:
-                    mask = f
-                clean_masks( mask, geodir=geodir, config=cf, file_only=True )
-    else:
-        title = 'Manual cleaning of external channel masks. The small object removal will use a 3 pixels river width.'
-        print; print(title); print('-'*len(title))
-        if len( args.clean_mask ) == 1:
-            path, file = os.path.split( args.clean_mask[0] )
-            if file == '': 
-                maskdir = path
-                clean_masks( maskdir, file_only=False )
+    if args.clean_label == 'single':
+        from pyris import clean_masks
+        if args.config is not None:
+            title = 'Manual cleaning of channel masks in internal directory'
+            print(); print(title); print('-'*len(title))
+            if len( args.clean_mask ) == 0:
+                clean_masks( maskdir, geodir=geodir, config=cf, file_only=False )
             else:
-                mask = args.clean_mask[0]
-                clean_masks( mask, file_only=True)
-        elif len( args.clean_mask ) > 1:
-            for mask in args.clean_mask:
-                clean_masks( mask, file_only=True )
+                for f in args.clean_mask:
+                    path, file = os.path.split( f )
+                    if path == '':
+                        mask = os.path.join( maskdir, f )
+                    else:
+                        mask = f
+                    clean_masks( mask, geodir=geodir, config=cf, file_only=True )
         else:
-            e = 'Missing config file if no mask directory or files are provided\n'
+            title = 'Manual cleaning of external channel masks. The small object removal will use a 3 pixels river width.'
+            print(); print(title); print('-'*len(title))
+            if len( args.clean_mask ) == 1:
+                path, file = os.path.split( args.clean_mask[0] )
+                if file == '': 
+                    maskdir = path
+                    clean_masks( maskdir, file_only=False )
+                else:
+                    mask = args.clean_mask[0]
+                    clean_masks( mask, file_only=True)
+            elif len( args.clean_mask ) > 1:
+                for mask in args.clean_mask:
+                    clean_masks( mask, file_only=True )
+            else:
+                e = 'Missing config file if no mask directory or files are provided\n'
+                parser.print_help()
+                raise ParserException(e)
+    elif args.clean_label == 'all':
+        from pyris import clean_all_masks
+        if args.config is not None:
+            title = 'Manual cleaning of a series of channel masks in internal directory'
+            print(); print(title); print('-'*len(title))
+            if len( args.clean_mask ) == 0:
+                clean_all_masks( maskdir, geodir, cf )
+            elif len( args.clean_mask ) == 1:
+                startmask = args.clean_mask[0]
+                clean_all_masks( maskdir, geodir, cf, startmask=startmask )
+            else:
+                e = 'Too many arguments for --clean-mask with --clean-label=all, specify just one mask\n'
+                parser.print_help()
+                raise ParserException(e)
+        else:
+            e = 'Missing config file if --clean-label=all\n'
             parser.print_help()
             raise ParserException(e)
+    else:
+        e = 'Invalid argument for --clean-label. Must be single or all\n'
+        parser.print_help()
+        raise ParserException(e)
 
 # Skeletonization
 # ---------------
