@@ -111,7 +111,7 @@ def get_year_jday( landsatname ):
 # Functions of the Main Script 
 # ============================
 
-def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
+def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None, log_file=None ):
     '''
     segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None )
     =====================================================================
@@ -125,6 +125,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
     config            PyRIS' RawConfigParser instance
     maskdir           directory where channel masks are stored
     auto_label        mask selection method if more than one object occur (default None)
+    log_file          log file to store the rejected images years (default None)
 
     Returns
     -------
@@ -217,6 +218,9 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
             if labssum<0:
                 to_skip.append( name )
                 print('no feature chosen for file %s - skipping ' % ( landsatname ))
+                # save in the log file
+                if log_file is not None:
+                    with open( log_file, 'a' ) as lf: lf.write( '%s\n' % name )
                 continue
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )
@@ -246,7 +250,7 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None ):
     return None
 
 
-def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
+def import_raw_mask(config, rawdir, geodir, maskdir, auto_label=None, log_file=None):
     '''
     import_raw_mask(rawdir, geodir, maskdir )
     ===========================================
@@ -260,6 +264,7 @@ def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
     geodir            directory where GeoTransf instances are stored (default None)
     maskdir           directory containing all the mask files
     auto_label        mask selection method if more than one object occur (default None)
+    log_file          log file to store the rejected masks years (default None)
 
     
     '''
@@ -343,6 +348,9 @@ def import_raw_mask(config, rawdir, geodir, maskdir, auto_label ):
             if labssum<0:
                 to_skip.append( name )
                 print('no feature chosen for file %s - skipping ' % ( rawname ))
+                # save in the log file
+                if log_file is not None:
+                    with open( log_file, 'a' ) as lf: lf.write( '%s\n' % name )
                 continue
             mask *= 0
             for ilab, lab in enumerate( labs ): mask += np.where( mask_lab==int(lab), ilab+1, 0 )

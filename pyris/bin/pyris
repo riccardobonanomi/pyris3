@@ -11,7 +11,7 @@
 # =============================================
 
 import os, sys
-import time
+from datetime import datetime
 import argparse
 import warnings
 from pyris.info import __name__, __fullname__, __version__
@@ -163,16 +163,23 @@ if args.config is not None:
     if not args.raw_mask_import:
         landsat_dirs = sorted( [ os.path.join(cf.get('Data','input'), f) for f in os.listdir(cf.get('Data','input'))
                              if os.path.isdir( os.path.join(cf.get('Data','input'), f) ) ] )
+    # log file
+    name = os.path.splitext( os.path.basename( args.config ) )[0]
+    log_file = os.path.join( cf.get( 'Data', 'output' ), name + '.log' )
+    if not os.path.isfile( log_file ):
+        with open( log_file, 'w' ) as lf: lf.write( 'PyRIS log file for %s\n' % name )
+    with open( log_file, 'a' ) as lf: lf.write( 'Code started execution: %s\n' % datetime.now().strftime('%Y-%m-%d %H:%M:%S') )
 
 # Perform Image Segmentation
 # --------------------------
 if args.segmentation:
     if not os.path.isdir( maskdir ): os.makedirs( maskdir )
-    if not os.path.isdir( geodir ): os.makedirs( geodir )
+    if not os.path.isdir( geodir  ): os.makedirs( geodir  )
+    with open( log_file, 'a' ) as lf: lf.write( 'Rejected Landsat images:\n')
     from pyris import segment_all
     title = 'Running image segmentation over the external directory: %s' % cf.get( 'Data', 'input' )
     print(); print(title); print('-'*len(title))
-    segment_all( landsat_dirs, geodir, cf, maskdir, auto_label=args.label )
+    segment_all( landsat_dirs, geodir, cf, maskdir, auto_label=args.label, log_file=log_file )
 
 # Import raw .tif mask
 # --------------------
@@ -182,19 +189,20 @@ if args.gee_mask_import or args.gee_dir is not None:  # TODO Remove this in vers
 
 if args.raw_mask_import:
     if not os.path.isdir( maskdir ): os.makedirs( maskdir )
-    if not os.path.isdir( geodir ): os.makedirs( geodir )
+    if not os.path.isdir( geodir  ): os.makedirs( geodir  )
+    with open( log_file, 'a' ) as lf: lf.write( 'Rejected external masks:\n')
     from pyris import import_raw_mask
     title = 'Importing raw mask obtained outside PyRIS'
     print(); print(title); print('-'*len(title))
     if args.raw_dir is None:
         title = 'Extracting river mask from raw .tif mask in internal directory: %s' % rawdir
         print(); print(title); print('-'*len(title))
-        import_raw_mask( cf, rawdir, geodir, maskdir, auto_label=args.label )
+        import_raw_mask( cf, rawdir, geodir, maskdir, auto_label=args.label, log_file=log_file )
     else:
         title = 'Extracting river mask from raw .tif mask in external directory: %s' % args.raw_dir
         print(); print(title); print('-'*len(title))
         rawdir = args.raw_dir
-        import_raw_mask( cf, rawdir, geodir, maskdir, auto_label=args.label )
+        import_raw_mask( cf, rawdir, geodir, maskdir, auto_label=args.label, log_file=log_file )
 
 # Manually Clean Masks
 # --------------------
@@ -311,4 +319,5 @@ if args.bars:
     title = 'Decesting bars from centerlines in internal directory: %s' % cf.get( 'Data', 'output' )
     bars_detection( landsat_dirs, geodir, axisdir, migdir, bardir, show=args.show )
 
-toc.print_elapsed_time() # print elapsed time
+# print elapsed time
+toc.print_elapsed_time()
