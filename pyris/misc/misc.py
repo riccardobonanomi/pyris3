@@ -350,5 +350,6 @@ class ToC( object ):
                 end_message = '%d minutes and %04.2f seconds' % (minutes, seconds)
         else:
             end_message = '%d hours, %02d minutes and %04.2f seconds' % (hours, minutes, seconds)
-        print(self.message + ' ended in ' + end_message)
+        message = self.message + ' ended in ' + end_message
+        print(); print('-'*len(message)); print(message)
         return None
