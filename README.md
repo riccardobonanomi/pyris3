@@ -5,8 +5,8 @@ PyRIS - Python RIvers by Satellite
 ### Extract River Features from Landsat Multispectral Data
 
 * Contains: pyris (module), pyris (cli script)
-* Version 3.2.0 (development)
-* README updated 2024/02/13
+* Version 3.2.1 (development)
+* README updated 2024/04/24
 
 ### Who do I talk to?
 
