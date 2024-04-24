@@ -417,7 +417,7 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
         GeoTransf = pickle.load( open(geofile, 'rb') ) if geofile is not None else None
         mask = np.load( maskfile )
         bw = np.where( mask>0, 1, 0 )
-        bw, press = MaskClean( bw, bg )()
+        bw, press, __ = MaskClean( bw, bg )()
         if press:
             if GeoTransf is not None and config is not None:
                 pixel_width = int(config.get('Data', 'channel_width')) / GeoTransf[ 'PixelSize' ]
@@ -434,6 +434,83 @@ def clean_masks( maskdir, geodir=None, config=None, file_only=False ):
                 print('skipping')
         else:
             print('skipping')
+    return None
+
+def clean_all_masks( maskdir, geodir, config, startmask=None ):
+    '''
+    clean_all_masks( maskdir, geodir, config, startmask=None )
+    =================================================================
+
+    Manually remove branches from one mask and apply the changes to all the
+    subsequent masks
+
+    Arguments
+    ---------
+    maskdir           directory containing all the mask files
+    geodir            directory where GeoTransf instances are stored
+    config            PyRIS' RawConfigParser instance
+    startmask         mask to be cleaned (default None)
+
+    Returns
+    -------
+    None
+    '''
+
+    maskfiles = sorted( [ os.path.join(maskdir, f) for f in os.listdir(maskdir) ] )
+    geofiles  = sorted( [ os.path.join(geodir,  f) for f in os.listdir(geodir ) ] )
+    if startmask is not None:
+        # Start from a specific mask
+        startmask = os.path.join( maskdir, startmask )
+        if not os.path.isfile( startmask ):
+            print('file %s not found' % startmask)
+            return None
+        start = maskfiles.index( startmask )
+    else:
+        # Start from the beginning
+        start = 0
+
+    for ifile, (maskfile,geofile) in enumerate( zip( maskfiles[start:], geofiles[start:] ) ):
+        print('cleaning file %s' % maskfile)
+        # Look for the corresponding landsat image
+        bg = None
+        yearday = os.path.splitext( os.path.basename(maskfile) )[0]
+        ldir = config.get('Data', 'input')
+        landsats = [os.path.join(ldir,d) for d in os.listdir(ldir)]
+        for l in landsats:
+            lyearday = '_'.join( os.path.basename(l) )
+            if yearday==lyearday:
+                bg = imread(os.path.join( l, os.path.basename(l).strip()+'_B1.TIF' ))
+                break
+        GeoTransf = pickle.load( open(geofile, 'rb') )
+        mask = np.load( maskfile )
+        bw = np.where( mask>0, 1, 0 )
+        bw, press, areas = MaskClean( bw, bg )()
+        if press:
+            pixel_width = int(config.get('Data', 'channel_width')) / GeoTransf[ 'PixelSize' ]
+            bw = RemoveSmallObjects( bw, small_object_dim*pixel_width**2 ) # Remove New Small Objects
+            
+            ans = None
+            while ans not in ['y', 'n']: ans = input('overwrite all masks file after %s?[y/n] ' % maskfile)
+            if ans == 'y':
+                print('saving masks file')
+                np.save( maskfile, mask*bw )
+                # Apply the same mask to all the subsequent masks
+                for jfile in range( start+ifile+1, len(maskfiles) ):
+                    print('cleaning file %s' % maskfiles[jfile])
+                    mask = np.load( maskfiles[jfile] )
+                    bw = np.where( mask>0, 1, 0 )
+                    for area in areas:
+                        ys, ye, xs, xe = area
+                        bw[ ys:ye,xs:xe ] = 0
+                    bw = RemoveSmallObjects( bw, small_object_dim*pixel_width**2 ) # Remove New Small Objects
+                    mask = mask*bw
+                    np.save( maskfiles[jfile], mask )
+                break
+            else:
+                print('skipping')
+        else:
+            print('skipping')
+
     return None
 
 def skeletonize_all( maskdir, skeldir, config ):
