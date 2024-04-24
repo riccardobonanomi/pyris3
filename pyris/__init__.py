@@ -688,7 +688,7 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
 
 def migration_rates( axisfiles, migdir, columns=(0,1), show=False, pfreq=1 ):
     '''
-    migration_rates( axisfiles, migdir, columns=(0,1), show=False, pfreq=10 ):
+    migration_rates( axisfiles, migdir, columns=(0,1), show=False, pfreq=1 ):
     ===========================================
 
     Compute migration vectors and bend separation for all the planform centerlines
@@ -714,6 +714,7 @@ def migration_rates( axisfiles, migdir, columns=(0,1), show=False, pfreq=1 ):
         X.append( x ), Y.append( y )
     migrations = AxisMigration( X, Y )( pfreq=pfreq )
     for i, migfile in enumerate( migfiles ):
+        print('saving migration data for %s' % os.path.basename( migfile ))
         [ dx, dy, dz, ICWTC, BI, B12, BUD ] = [ m[i] for m in migrations ]
         data = np.vstack( (dx, dy, dz, ICWTC, BI, B12, BUD) )
         save( migfile, data )
