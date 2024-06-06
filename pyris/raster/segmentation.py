@@ -65,22 +65,18 @@ def SegmentationIndex( *args, **kwargs ):
     selem = mm.disk( rad )
     globthresh = threshold_otsu( IDX[np.isfinite(IDX)] )
 
-    if index=='MIX':
-        globthreshX = threshold_otsu( IDXX[np.isfinite(IDXX)] )
-        globthreshXX = threshold_otsu( IDXXX[np.isfinite(IDXXX)] )
+    if index=='MIX': globthreshX = threshold_otsu( IDXX[np.isfinite(IDXX)] )
 
     if method == 'local':
         print("applying local Otsu method - this may require some time... ", )
         thresh = rank.otsu( img_as_ubyte(IDX), selem ).astype(float)
-        if index=='MIX':
-            threshX = rank.otsu( img_as_ubyte(IDXX), selem ).astype(float)
-            threshXX = rank.otsu( img_as_ubyte(IDXXX), selem ).astype(float)
+        if index=='MIX': threshX = rank.otsu( img_as_ubyte(IDXX), selem ).astype(float)
         print('done')
     else:
         thresh = globthresh
         if index=='MIX':
             threshX = globthreshX
-            threshXX = globthreshXX
+            threshXX = 90
 
     if index == 'MIX':
         MASK = np.logical_or( ( IDX>=thresh ) * ( mm.binary_dilation(IDXX>=threshX,mm.disk(0.3*rad)) ), IDXXX>threshXX)
