@@ -146,12 +146,12 @@ def segment_all( landsat_dirs, geodir, config, maskdir, auto_label=None, log_fil
 
         # skip the files which have already been processes
         if all( map( os.path.isfile, [ maskfile, geofile ] ) ):
-            print
+            print()
             print('data found for file %s - skipping '  % ( landsatname ))
             to_skip.append( name )
             continue
 
-        print
+        print()
         print('Processing file %s' % ( landsatname ))
 
         bands, GeoTransf = LoadLandsatData( landsat )
@@ -289,7 +289,7 @@ def import_raw_mask(config, rawdir, geodir, maskdir, auto_label=None, log_file=N
             to_skip.append( name )
             continue
 
-        print
+        print()
         print('Loading %s' % ( rawname ))
 
         # Loading rawmask and georeferencing data
@@ -551,7 +551,7 @@ def skeletonize_all( maskdir, skeldir, config ):
         if os.path.isfile( skelfile ):
             print('data found for file %s - skipping '  % ( skelfile ))
             continue
-        print
+        print()
         print('Processing file %s' % ( maskfile ))
 
         mask = np.load( maskfile ).astype( int )
@@ -643,7 +643,7 @@ def vectorize_all( geodir, maskdir, skeldir, config, axisdir, use_geo=True ):
         if os.path.isfile( axisfile ):
             print('data found for file %s - skipping '  % ( axisfile ))
             continue
-        print
+        print()
         print('Processing file %s' % ( maskfile ))
 
         # Load mask, skeleton and GeoFile
