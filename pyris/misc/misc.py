@@ -70,12 +70,22 @@ def LoadLandsatData( dirname ):
     '''
     Load Relevant Bands for the Current Landsat Data
     '''
-    if any( [os.path.split(dirname)[-1].startswith( s ) for s in ['LC8', 'LC08', 'LC9', 'LC09']] ): bidx = range( 2, 8 )
-    else: bidx = [1,2,3,4,5,7]
+    if any( [os.path.split(dirname)[-1].startswith( s ) for s in ['LC8', 'LC08', 'LC9', 'LC09']] ): 
+        LS_89 = True
+        bidx = range( 2, 8 )
+    else:
+        LS_89 = False
+        bidx = [1,2,3,4,5,7]
     base = os.path.join( dirname, os.path.basename(dirname) )
     ext = '.TIF'
     bnames = [ ('_B'.join(( base, '%d' % i )))+ext for i in bidx ]
-    [ B, G, R, NIR, MIR, SWIR ] = [ imread( band ) for band in bnames ]
+    if LS_89:
+        # convert the 16-bit values to 8-bit to work as if it were Landsat 4, 5, 7, retaing the same precision as 16-bit
+        conversion16to8 = lambda x: (imread( x )/65535*255)
+        [ B, G, R, NIR, MIR, SWIR ] = [ conversion16to8( band ) for band in bnames ]
+    else:
+        [ B, G, R, NIR, MIR, SWIR ] = [ imread( band ) for band in bnames ]
+    
     bands = [ R, G, B, NIR, MIR, SWIR ]
 
     geo = gdal.Open( bnames[0] )

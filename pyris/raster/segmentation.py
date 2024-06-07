@@ -70,7 +70,9 @@ def SegmentationIndex( *args, **kwargs ):
     if method == 'local':
         print("applying local Otsu method - this may require some time... ", )
         thresh = rank.otsu( img_as_ubyte(IDX), selem ).astype(float)
-        if index=='MIX': threshX = rank.otsu( img_as_ubyte(IDXX), selem ).astype(float)
+        if index=='MIX':
+            threshX = rank.otsu( img_as_ubyte(IDXX), selem ).astype(float)
+            threshXX = 90
         print('done')
     else:
         thresh = globthresh
