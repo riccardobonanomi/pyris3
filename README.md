@@ -30,6 +30,7 @@ PyRIS - Python RIvers by Satellite
 - 3.1.5 (2024/02/13) by Riccardo Bonanomi   -> Removed clean gee options
 - 3.2.0 (2024/02/13) by Riccardo Bonanomi   -> Moved from gee to raw mask options
 - 3.2.1 (2024/04/23) by Riccardo Bonanomi   -> Improved manual mask cleaning functionalities
+- 3.2.2 (2024/06/09) by Riccardo Bonanomi   -> Fixed Landsat 8-9 bug, fixed axis-files bug, fixed bars bug
 
 -------------
 ## Fast guide
