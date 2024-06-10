@@ -169,8 +169,8 @@ class BarFinder( object ):
 
         if remove_small:
             Amin = 0.1*self.unwrapper.N.size/2 * ( self.unwrapper.b.mean() /  (self.unwrapper.s[1]-self.unwrapper.s[0]) )
-            mm.remove_small_objects( Bars, 1, in_place=True ) # Remove small Bars
-            mm.remove_small_holes(   Bars, Amin, in_place=True ) # Remove Internal Spots
+            Bars = mm.remove_small_objects( Bars, 1) # Remove small Bars
+            Bars = mm.remove_small_holes(   Bars, Amin ) # Remove Internal Spots
 
         # Apply a Convex Hull to Channel Bars
         Bars = mm.convex_hull_object( Bars )
