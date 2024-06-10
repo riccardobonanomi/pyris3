@@ -822,7 +822,8 @@ def bars_detection( landsat_dirs, geodir, axisdir, migdir, bardir, show=False ):
 
     S, N, X, Y, Z, Xi, Yi, Si, Ni, DSi, DNi, YYi, Wi, BarCorr = bars.CentroidsEvol( 0 )
 
-    np.save( os.path.join(bardir, 'interpolation.npy'), (S,N,X,Y,Z) )
+    print('Saving bar data')
+    np.save( os.path.join(bardir, 'interpolation.npy'), (S.T,N.T,X,Y,Z) )
     np.save( os.path.join(bardir, 'bendsep.npy'), (bars.Bars[0].unwrapper.Bend, bars.Bars[0].unwrapper.b) )
     np.save( os.path.join(bardir, 'values.npy'), (Xi, Yi, Si, Ni, DSi, DNi, YYi, Wi) )
     np.save( os.path.join(bardir, 'barcorr.npy'), BarCorr )
